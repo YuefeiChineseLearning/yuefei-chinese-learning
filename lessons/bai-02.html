@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2563eb">
+<title>Yuefei - Bài 2: 你是哪国人？</title>
+<style>
+:root{--blue:#2563eb;--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#667085;--line:#d8e1ee;--ok:#16a34a;--bad:#dc2626}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Noto Sans SC","Microsoft YaHei",sans-serif}
+button,input{font:inherit}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;padding:14px 16px 12px}
+.brand{font-size:18px;font-weight:800}.sub{font-size:13px;margin-top:4px}
+.progress-wrap{height:8px;background:#ffffff44;border-radius:99px;margin-top:10px;overflow:hidden}.progress{height:100%;background:#fff;width:0}
+nav{position:sticky;top:82px;z-index:19;display:flex;gap:8px;overflow:auto;background:#fff;padding:10px;border-bottom:1px solid var(--line)}
+.tab{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:99px;padding:10px 14px;font-weight:700}.tab.active{background:var(--blue);color:#fff}
+main{max-width:820px;margin:auto;padding:12px 12px 90px}.section{display:none}.section.active{display:block}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 8px 22px #0000000c}
+h2,h3{margin:0 0 10px}.note{font-size:14px;color:var(--muted);line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.flash{min-height:280px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(180deg,#fff,#f8fbff);border:2px solid #dbeafe;border-radius:22px;padding:24px}
+.hz{font-size:54px;font-weight:800}.py{font-size:22px;color:var(--blue);font-weight:800;margin-top:10px}.mean{font-size:20px;margin-top:8px}.ex{color:#475467;margin-top:12px}
+.row{display:flex;gap:10px;margin-top:12px}.btn{flex:1;border:0;border-radius:14px;padding:12px 14px;font-weight:800}.primary{background:var(--blue);color:#fff}.secondary{background:#e9eef6}.goodbtn{background:#dcfce7;color:#166534}
+.option{width:100%;text-align:left;border:1px solid var(--line);background:#fff;padding:12px 14px;border-radius:14px;margin:8px 0}.correct{background:#ecfdf3!important;border-color:var(--ok)!important}.wrong{background:#fff1f2!important;border-color:var(--bad)!important}
+.feedback{font-weight:800;min-height:24px;margin-top:8px}.ok{color:var(--ok)}.bad{color:var(--bad)}
+.input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:14px}
+.tone{padding:16px;border:1px solid var(--line);border-radius:16px;background:#fff;text-align:center}.tone b{font-size:26px;color:var(--blue)}
+.dialogue p{line-height:1.7}.speaker{font-weight:800;color:var(--blue)}
+footer{position:fixed;bottom:0;left:0;right:0;background:#fffffff2;border-top:1px solid var(--line);padding:10px 12px}.footer-inner{max-width:820px;margin:auto;display:flex;gap:10px;align-items:center}.score{font-weight:800;flex:1}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.hz{font-size:47px}.card{padding:14px}}
+</style>
+</head>
+<body>
+<header><div class="brand">YUEFEI CHINESE LEARNING</div><div class="sub">Bài 2 · 第二课：你是哪国人？</div><div class="progress-wrap"><div class="progress" id="progress"></div></div></header>
+
+<nav>
+<button class="tab active" data-tab="overview">Tổng quan</button>
+<button class="tab" data-tab="pron">Phát âm</button>
+<button class="tab" data-tab="flash">Lật thẻ</button>
+<button class="tab" data-tab="choice">Trắc nghiệm</button>
+<button class="tab" data-tab="typing">Gõ chữ Hán</button>
+<button class="tab" data-tab="translate">Bài dịch</button>
+<button class="tab" data-tab="reading">Bài khóa</button>
+<button class="tab" data-tab="numbers">Số đếm</button>
+</nav>
+
+<main>
+<section id="overview" class="section active">
+<div class="card"><h2>你是哪国人？</h2><p class="note">Mục tiêu: hỏi quốc tịch, giới thiệu mình là người nước nào, dùng 是 / 不 / 吗 / 呢 và phân biệt z c s với zh ch sh r.</p></div>
+<div class="grid">
+<div class="card"><h3>Quốc gia</h3><p>中国 · 越南 · 美国 · 韩国 · 日本 · 法国 · 英国 · 泰国</p></div>
+<div class="card"><h3>Mẫu câu</h3><p>你是哪国人？<br>我是越南人。<br>你呢？</p></div>
+<div class="card"><h3>Khẳng định / phủ định</h3><p>我是老师。<br>我不是老师。</p></div>
+<div class="card"><h3>Câu hỏi 吗</h3><p>你是越南人吗？</p></div>
+</div>
+</section>
+
+<section id="pron" class="section">
+<div class="card"><h2>声母 · Thanh mẫu mới</h2><div class="grid">
+<div class="tone"><b>zh ch sh r</b><div>Âm uốn lưỡi</div></div>
+<div class="tone"><b>z c s</b><div>Âm đầu lưỡi</div></div>
+</div></div>
+<div class="card"><h3>Âm tiết đặc biệt</h3><p><b>zhi · chi · shi · ri</b></p><p><b>zi · ci · si</b></p><p class="note">“i” sau zh/ch/sh/r/z/c/s không đọc như i thông thường.</p></div>
+<div class="card"><h3>Luyện phân biệt</h3><div id="pronQ"></div><div id="pronOpts"></div><div id="pronFb" class="feedback"></div><button class="btn primary" style="width:100%" onclick="nextPron()">Câu tiếp theo</button></div>
+</section>
+
+<section id="flash" class="section">
+<div class="card"><h2>Lật thẻ từ vựng</h2></div>
+<div class="flash" id="flashCard"><div class="hz" id="fcHanzi"></div><div id="fcDetail" style="display:none"><div class="py" id="fcPinyin"></div><div class="mean" id="fcMeaning"></div><div class="ex" id="fcExample"></div></div></div>
+<div class="row"><button class="btn secondary" onclick="prevCard()">← Trước</button><button class="btn primary" onclick="toggleCard()">Lật thẻ</button><button class="btn secondary" onclick="nextCard()">Tiếp →</button></div>
+<div class="row"><button class="btn goodbtn" onclick="rememberCard()">Đã nhớ</button><button class="btn secondary" onclick="shuffleCards()">Trộn thẻ</button></div><div class="card" id="cardCount"></div>
+</section>
+
+<section id="choice" class="section">
+<div class="card"><h2>Chọn đáp án đúng</h2><div id="choiceQ"></div><div id="choiceOpts"></div><div id="choiceFb" class="feedback"></div><button class="btn primary" style="width:100%" onclick="nextChoice()">Câu tiếp theo</button></div>
+</section>
+
+<section id="typing" class="section">
+<div class="card"><h2>Gõ chữ Hán</h2><div id="typeQ"></div><input id="typeInput" class="input" placeholder="Nhập chữ Hán..."><div class="row"><button class="btn secondary" onclick="showType()">Xem đáp án</button><button class="btn primary" onclick="checkType()">Kiểm tra</button></div><div id="typeFb" class="feedback"></div><button class="btn goodbtn" style="width:100%" onclick="nextType()">Câu tiếp theo</button></div>
+</section>
+
+<section id="translate" class="section">
+<div class="card"><h2>Dịch Việt → Trung</h2><div id="transQ"></div><input id="transInput" class="input" placeholder="Nhập câu tiếng Trung..."><div class="row"><button class="btn secondary" onclick="showTrans()">Xem đáp án</button><button class="btn primary" onclick="checkTrans()">Kiểm tra</button></div><div id="transFb" class="feedback"></div><button class="btn goodbtn" style="width:100%" onclick="nextTrans()">Câu tiếp theo</button></div>
+</section>
+
+<section id="reading" class="section">
+<div class="card dialogue"><h2>课文 · Bài khóa</h2>
+<p><span class="speaker">崔浩：</span>你是哪国人？</p>
+<p><span class="speaker">马丁：</span>我是美国人，你呢？</p>
+<p><span class="speaker">崔浩：</span>我是韩国人。</p>
+</div>
+<div id="readQuiz"></div>
+</section>
+
+<section id="numbers" class="section">
+<div class="card"><h2>数字 0–10</h2><div class="grid" id="numGrid"></div></div>
+<div class="card"><h3>Kiểm tra nhanh</h3><div id="numQ"></div><div id="numOpts"></div><div id="numFb" class="feedback"></div><button class="btn primary" style="width:100%" onclick="nextNum()">Câu tiếp theo</button></div>
+</section>
+</main>
+
+<footer><div class="footer-inner"><div id="scoreText" class="score">Điểm: 0 · Đã làm: 0</div><button class="btn secondary" style="flex:0 0 auto" onclick="location.reload()">Làm lại</button></div></footer>
+
+<script>
+const $=id=>document.getElementById(id);let score=0,done=0,known=0;
+function add(n){score+=n;done++;$("scoreText").textContent=`Điểm: ${score} · Đã làm: ${done}`;$("progress").style.width=Math.min(100,done/25*100)+"%"}
+function norm(s){return(s||"").replace(/[，。！？,.!?；;：:\s]/g,"")}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")});
+
+const vocab=[
+["中国","Zhōngguó","Trung Quốc","我是中国人。"],["越南","Yuènán","Việt Nam","我是越南人。"],["美国","Měiguó","Mỹ","马丁是美国人。"],["韩国","Hánguó","Hàn Quốc","崔浩是韩国人。"],["日本","Rìběn","Nhật Bản","他是日本人。"],["法国","Fǎguó","Pháp","她是法国人。"],["英国","Yīngguó","Anh","他是英国人。"],["泰国","Tàiguó","Thái Lan","她是泰国人。"],["哪国人","nǎ guó rén","người nước nào","你是哪国人？"],["是","shì","là","我是老师。"],["不","bù","không","我不是老师。"],["吗","ma","trợ từ nghi vấn","你是越南人吗？"],["呢","ne","còn... thì sao?","你呢？"],["早上","zǎoshang","buổi sáng","早上好！"],["早上好","zǎoshang hǎo","chào buổi sáng","老师，早上好！"]
+].sort(()=>Math.random()-.5);
+let fi=0,shown=false;
+function renderCard(){let v=vocab[fi];fcHanzi.textContent=v[0];fcPinyin.textContent=v[1];fcMeaning.textContent=v[2];fcExample.textContent=v[3];fcDetail.style.display=shown?"block":"none";cardCount.textContent=`Thẻ ${fi+1}/${vocab.length} · Đã nhớ ${known}`}
+function toggleCard(){shown=!shown;renderCard()}function nextCard(){fi=(fi+1)%vocab.length;shown=false;renderCard()}function prevCard(){fi=(fi-1+vocab.length)%vocab.length;shown=false;renderCard()}function rememberCard(){known++;add(1);nextCard()}function shuffleCards(){vocab.sort(()=>Math.random()-.5);fi=0;shown=false;renderCard()}flashCard.onclick=toggleCard;renderCard();
+
+const pronQs=[["Chọn âm uốn lưỡi",["z","c","sh","s"],"sh"],["Chọn âm đầu lưỡi",["zh","ch","r","z"],"z"],["Âm nào bật hơi?",["zh","ch","sh","r"],"ch"],["Chọn âm tiết đặc biệt đúng",["zhi","zii","shi","rii"],"zhi"]];let pi=0;
+function renderPron(){let q=pronQs[pi];pronQ.textContent=q[0];pronOpts.innerHTML="";pronFb.textContent="";q[1].forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{[...pronOpts.children].forEach(x=>x.disabled=true);if(o===q[2]){b.classList.add("correct");pronFb.textContent="Chính xác!";pronFb.className="feedback ok";add(2)}else{b.classList.add("wrong");pronFb.textContent="Đáp án: "+q[2];pronFb.className="feedback bad";add(0)}};pronOpts.appendChild(b)})}
+function nextPron(){pi=(pi+1)%pronQs.length;renderPron()}renderPron();
+
+const choices=[
+["你是哪国人？",["Bạn là người nước nào?","Bạn tên gì?","Bạn học gì?","Bạn khỏe không?"],"Bạn là người nước nào?"],
+["我是越南人。",["Tôi là người Việt Nam.","Tôi không phải người Việt Nam.","Tôi là giáo viên.","Tôi học tiếng Việt."],"Tôi là người Việt Nam."],
+["你是越南人吗？",["Bạn là người Việt Nam phải không?","Bạn là người nước nào?","Bạn có khỏe không?","Bạn là ai?"],"Bạn là người Việt Nam phải không?"],
+["我不是韩国人。",["Tôi là người Hàn.","Tôi không phải người Hàn.","Tôi là người Việt.","Tôi không phải giáo viên."],"Tôi không phải người Hàn."],
+["“你呢？” nghĩa là gì?",["Còn bạn?","Bạn là ai?","Bạn có khỏe không?","Bạn đi đâu?"],"Còn bạn?"],
+["“早上好” dùng khi nào?",["Buổi sáng","Buổi trưa","Buổi tối","Khi tạm biệt"],"Buổi sáng"]
+];let ci=0;
+function renderChoice(){let q=choices[ci];choiceQ.textContent=q[0];choiceOpts.innerHTML="";choiceFb.textContent="";q[1].slice().sort(()=>Math.random()-.5).forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{[...choiceOpts.children].forEach(x=>x.disabled=true);if(o===q[2]){b.classList.add("correct");choiceFb.textContent="Chính xác!";choiceFb.className="feedback ok";add(2)}else{b.classList.add("wrong");choiceFb.textContent="Đáp án: "+q[2];choiceFb.className="feedback bad";add(0)}};choiceOpts.appendChild(b)})}
+function nextChoice(){ci=(ci+1)%choices.length;renderChoice()}renderChoice();
+
+const typing=[["Trung Quốc","中国"],["Việt Nam","越南"],["Mỹ","美国"],["Hàn Quốc","韩国"],["Nhật Bản","日本"],["người nước nào","哪国人"],["là","是"],["không","不"],["còn... thì sao?","呢"],["chào buổi sáng","早上好"]];let ti=0;
+function renderType(){typeQ.textContent=typing[ti][0];typeInput.value="";typeFb.textContent=""}
+function checkType(){if(norm(typeInput.value)===typing[ti][1]){typeFb.textContent="Chính xác!";typeFb.className="feedback ok";add(2)}else{typeFb.textContent="Đáp án: "+typing[ti][1];typeFb.className="feedback bad";add(0)}}
+function showType(){typeFb.textContent="Đáp án: "+typing[ti][1]}function nextType(){ti=(ti+1)%typing.length;renderType()}renderType();
+
+const trans=[["Bạn là người nước nào?","你是哪国人"],["Tôi là người Việt Nam.","我是越南人"],["Tôi là người Mỹ, còn bạn?","我是美国人你呢"],["Bạn là người Việt Nam phải không?","你是越南人吗"],["Tôi không phải người Hàn Quốc.","我不是韩国人"],["Cô ấy là người Pháp.","她是法国人"]];let tri=0;
+function renderTrans(){transQ.textContent=trans[tri][0];transInput.value="";transFb.textContent=""}
+function checkTrans(){if(norm(transInput.value)===norm(trans[tri][1])){transFb.textContent="Chính xác!";transFb.className="feedback ok";add(3)}else{transFb.textContent="Đáp án: "+trans[tri][1]+"。";transFb.className="feedback bad";add(0)}}
+function showTrans(){transFb.textContent="Đáp án: "+trans[tri][1]+"。"}function nextTrans(){tri=(tri+1)%trans.length;renderTrans()}renderTrans();
+
+const readQs=[["马丁是哪国人？",["美国人","韩国人","日本人"],"美国人"],["崔浩是哪国人？",["美国人","韩国人","中国人"],"韩国人"],["“你呢？”是谁说的？",["马丁","崔浩","老师"],"马丁"]];
+readQs.forEach((q,i)=>{let c=document.createElement("div");c.className="card";c.innerHTML=`<b>${i+1}. ${q[0]}</b>`;q[1].forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{c.querySelectorAll("button").forEach(x=>x.disabled=true);if(o===q[2]){b.classList.add("correct");add(3)}else{b.classList.add("wrong");add(0)}};c.appendChild(b)});readQuiz.appendChild(c)});
+
+const nums=[["0","零","líng"],["1","一","yī"],["2","二","èr"],["3","三","sān"],["4","四","sì"],["5","五","wǔ"],["6","六","liù"],["7","七","qī"],["8","八","bā"],["9","九","jiǔ"],["10","十","shí"]];
+nums.forEach(n=>{let b=document.createElement("button");b.className="tone";b.innerHTML=`<b>${n[0]}</b><div>${n[1]}</div><div>${n[2]}</div>`;numGrid.appendChild(b)});
+let ni=0;function renderNum(){let q=nums[ni];numQ.textContent=`Số ${q[0]} viết bằng chữ Hán là gì?`;numOpts.innerHTML="";numFb.textContent="";let opts=[q[1],...nums.filter(x=>x[1]!==q[1]).sort(()=>Math.random()-.5).slice(0,3).map(x=>x[1])].sort(()=>Math.random()-.5);opts.forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{[...numOpts.children].forEach(x=>x.disabled=true);if(o===q[1]){b.classList.add("correct");numFb.textContent="Chính xác!";numFb.className="feedback ok";add(2)}else{b.classList.add("wrong");numFb.textContent="Đáp án: "+q[1];numFb.className="feedback bad";add(0)}};numOpts.appendChild(b)})}
+function nextNum(){ni=(ni+1)%nums.length;renderNum()}renderNum();
+</script>
+</body>
+</html>
