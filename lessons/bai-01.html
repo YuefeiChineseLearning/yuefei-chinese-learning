@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2563eb">
+<title>Yuefei - Bài 1: 你好</title>
+<style>
+:root{
+  --blue:#2563eb;--blue2:#1d4ed8;--bg:#f4f7fb;--card:#fff;--text:#172033;
+  --muted:#667085;--line:#d8e1ee;--ok:#16a34a;--bad:#dc2626;--gold:#f59e0b
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif}
+button,input{font:inherit}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,var(--blue),#60a5fa);color:#fff;padding:14px 16px 12px;box-shadow:0 4px 16px #2563eb33}
+.brand{font-size:18px;font-weight:800}.sub{font-size:13px;margin-top:4px}
+.progress-wrap{height:8px;background:#ffffff44;border-radius:99px;margin-top:10px;overflow:hidden}
+.progress{height:100%;width:0;background:#fff;transition:.25s}
+nav{position:sticky;top:82px;z-index:19;background:#fff;border-bottom:1px solid var(--line);display:flex;gap:8px;overflow-x:auto;padding:10px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-weight:700;color:#344054}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+main{max-width:820px;margin:auto;padding:12px 12px 92px}
+.section{display:none}.section.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 8px 24px #1018280d}
+h2,h3{margin:0 0 10px}.note{color:var(--muted);font-size:14px;line-height:1.5}
+.flash{min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(180deg,#fff,#f8fbff);border:2px solid #dbeafe;border-radius:22px;padding:24px;user-select:none}
+.hanzi{font-size:58px;font-weight:800;line-height:1.15}.pinyin{font-size:22px;color:var(--blue);font-weight:800;margin-top:10px}.meaning{font-size:21px;margin-top:8px}.example{color:#475467;margin-top:12px;line-height:1.55}
+.row{display:flex;gap:10px;margin-top:12px}.btn{border:0;border-radius:14px;padding:12px 14px;font-weight:800;flex:1;cursor:pointer}
+.primary{background:var(--blue);color:#fff}.secondary{background:#e9eef6;color:#344054}.good{background:#dcfce7;color:#166534}.warn{background:#fff7ed;color:#9a3412}
+.option{display:block;width:100%;text-align:left;border:1px solid var(--line);background:#fff;padding:12px 14px;border-radius:14px;margin:8px 0}
+.option.correct{background:#ecfdf3;border-color:var(--ok)}.option.wrong{background:#fff1f2;border-color:var(--bad)}
+.feedback{min-height:24px;font-weight:800;margin-top:8px}.feedback.ok{color:var(--ok)}.feedback.bad{color:var(--bad)}
+.input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tone{padding:16px;border-radius:16px;border:1px solid var(--line);background:#fff;text-align:center}
+.tone b{font-size:28px;color:var(--blue)}.small{font-size:12px;color:var(--muted)}
+.wordbank{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:8px 12px;font-weight:700}.answerline{min-height:50px;border:2px dashed #cbd5e1;border-radius:14px;padding:10px;margin-top:10px}
+.dialogue p{line-height:1.7;margin:8px 0}.speaker{font-weight:800;color:var(--blue)}
+footer{position:fixed;left:0;right:0;bottom:0;background:#fffffff2;border-top:1px solid var(--line);padding:10px 12px;z-index:30;backdrop-filter:blur(8px)}
+.footer-inner{max-width:820px;margin:auto;display:flex;align-items:center;gap:10px}.score{font-weight:800;flex:1}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.hanzi{font-size:50px}.card{padding:14px}.row{gap:8px}.btn{padding:11px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">YUEFEI CHINESE LEARNING</div>
+  <div class="sub">Bài 1 · 第一课：你好！</div>
+  <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+</header>
+
+<nav>
+  <button class="tab active" data-tab="overview">Tổng quan</button>
+  <button class="tab" data-tab="tones">Thanh điệu</button>
+  <button class="tab" data-tab="flash">Lật thẻ</button>
+  <button class="tab" data-tab="typing">Gõ chữ Hán</button>
+  <button class="tab" data-tab="choice">Trắc nghiệm</button>
+  <button class="tab" data-tab="dialogue">Bài khóa</button>
+  <button class="tab" data-tab="numbers">Số 0–10</button>
+</nav>
+
+<main>
+<section id="overview" class="section active">
+  <div class="card">
+    <h2>你好！Xin chào!</h2>
+    <p class="note">Bài 1 luyện phát âm cơ bản, thanh điệu, chào hỏi, đại từ nhân xưng và số 0–10.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>声母 · Thanh mẫu</h3><p>b p m f · d t n l · g k h</p></div>
+    <div class="card"><h3>韵母 · Vận mẫu</h3><p>a o e i u ü · ai ei ao ou · an en ang eng</p></div>
+    <div class="card"><h3>问候 · Chào hỏi</h3><p>你好 · 您好 · 你们好 · 老师好</p></div>
+    <div class="card"><h3>代词 · Đại từ</h3><p>我 · 你 · 您 · 他 · 她 · 我们 · 你们 · 他们</p></div>
+  </div>
+</section>
+
+<section id="tones" class="section">
+  <div class="card">
+    <h2>声调 · Thanh điệu</h2>
+    <div class="note">Đọc theo đường nét của thanh. Chạm vào từng ô để luyện.</div>
+  </div>
+  <div class="grid">
+    <button class="tone" onclick="alert('Thanh 1: cao và đều')"><b>mā</b><div>Thanh 1</div></button>
+    <button class="tone" onclick="alert('Thanh 2: đi lên')"><b>má</b><div>Thanh 2</div></button>
+    <button class="tone" onclick="alert('Thanh 3: xuống rồi lên')"><b>mǎ</b><div>Thanh 3</div></button>
+    <button class="tone" onclick="alert('Thanh 4: đi xuống mạnh')"><b>mà</b><div>Thanh 4</div></button>
+  </div>
+  <div class="card">
+    <h3>Luyện phân biệt</h3>
+    <div id="toneQ" class="qtitle"></div>
+    <div id="toneOpts"></div>
+    <div id="toneFb" class="feedback"></div>
+    <button class="btn primary" style="width:100%" onclick="nextTone()">Câu tiếp theo</button>
+  </div>
+  <div class="card">
+    <h3>Biến điệu thanh 3</h3>
+    <p><b>nǐ hǎo → ní hǎo</b></p>
+    <p><b>hěn hǎo → hén hǎo</b></p>
+    <p class="note">Khi hai thanh 3 đi liền nhau, âm thứ nhất thường đọc thành thanh 2.</p>
+  </div>
+</section>
+
+<section id="flash" class="section">
+  <div class="card"><h2>Lật thẻ từ vựng</h2><div class="note">Chạm vào thẻ để hiện phiên âm và nghĩa.</div></div>
+  <div class="flash" id="flashCard">
+    <div class="hanzi" id="fcHanzi"></div>
+    <div id="fcDetail" style="display:none">
+      <div class="pinyin" id="fcPinyin"></div>
+      <div class="meaning" id="fcMeaning"></div>
+      <div class="example" id="fcExample"></div>
+    </div>
+  </div>
+  <div class="row">
+    <button class="btn secondary" onclick="prevCard()">← Trước</button>
+    <button class="btn primary" onclick="toggleCard()">Lật thẻ</button>
+    <button class="btn secondary" onclick="nextCard()">Tiếp →</button>
+  </div>
+  <div class="row">
+    <button class="btn good" onclick="rememberCard()">Đã nhớ</button>
+    <button class="btn warn" onclick="shuffleCards()">Trộn thẻ</button>
+  </div>
+  <div class="card small" id="cardCount"></div>
+</section>
+
+<section id="typing" class="section">
+  <div class="card"><h2>Gõ chữ Hán</h2><div class="note">Nhìn nghĩa rồi nhập đúng chữ Hán.</div></div>
+  <div class="card">
+    <div class="qtitle" id="typeQ"></div>
+    <input id="typeInput" class="input" placeholder="Nhập chữ Hán...">
+    <div class="row">
+      <button class="btn secondary" onclick="showType()">Xem đáp án</button>
+      <button class="btn primary" onclick="checkType()">Kiểm tra</button>
+    </div>
+    <div class="feedback" id="typeFb"></div>
+    <button class="btn good" style="width:100%;margin-top:10px" onclick="nextType()">Câu tiếp theo</button>
+  </div>
+</section>
+
+<section id="choice" class="section">
+  <div class="card"><h2>Chọn đáp án đúng</h2></div>
+  <div class="card">
+    <div class="qtitle" id="choiceQ"></div>
+    <div id="choiceOpts"></div>
+    <div class="feedback" id="choiceFb"></div>
+    <button class="btn primary" style="width:100%" onclick="nextChoice()">Câu tiếp theo</button>
+  </div>
+</section>
+
+<section id="dialogue" class="section">
+  <div class="card dialogue">
+    <h2>课文一 · Bài khóa 1</h2>
+    <p><span class="speaker">马丁：</span>你好！<br><span class="small">Mǎdīng: Nǐ hǎo!</span></p>
+    <p><span class="speaker">林娜：</span>你好！<br><span class="small">Línnà: Nǐ hǎo!</span></p>
+  </div>
+  <div class="card dialogue">
+    <h2>课文二 · Bài khóa 2</h2>
+    <p><span class="speaker">李一民：</span>你好！<br><span class="small">Lǐ Yīmín: Nǐ hǎo!</span></p>
+    <p><span class="speaker">阿明：</span>您好！<br><span class="small">Āmíng: Nín hǎo!</span></p>
+  </div>
+  <div class="card dialogue">
+    <h2>扩展 · Mở rộng</h2>
+    <p><span class="speaker">A：</span>你好吗？</p>
+    <p><span class="speaker">B：</span>我很好，谢谢！</p>
+    <p><span class="speaker">A：</span>不客气！</p>
+  </div>
+  <div id="dialogueQuiz"></div>
+</section>
+
+<section id="numbers" class="section">
+  <div class="card"><h2>数字 0–10</h2><div class="note">Chạm vào số để xem cách đọc.</div></div>
+  <div class="grid" id="numberGrid"></div>
+  <div class="card">
+    <h3>Kiểm tra nhanh</h3>
+    <div id="numberQ" class="qtitle"></div>
+    <div id="numberOpts"></div>
+    <div id="numberFb" class="feedback"></div>
+    <button class="btn primary" style="width:100%" onclick="nextNumber()">Câu tiếp theo</button>
+  </div>
+</section>
+</main>
+
+<footer><div class="footer-inner"><div id="scoreText" class="score">Điểm: 0 · Đã làm: 0</div><button class="btn secondary" style="flex:0 0 auto" onclick="location.reload()">Làm lại</button></div></footer>
+
+<script>
+const $=id=>document.getElementById(id);
+let score=0,done=0,known=0;
+function add(n){score+=n;done++;$("scoreText").textContent=`Điểm: ${score} · Đã làm: ${done}`;$("progress").style.width=Math.min(100,Math.round(done/25*100))+"%"}
+function norm(s){return(s||"").replace(/[，。！？,.!?；;：:\s]/g,"")}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")});
+
+const vocab=[
+["你好","nǐ hǎo","xin chào","你好！"],
+["您好","nín hǎo","xin chào (kính trọng)","老师，您好！"],
+["你们好","nǐmen hǎo","xin chào các bạn","同学们，你们好！"],
+["老师好","lǎoshī hǎo","chào thầy/cô","老师好！"],
+["我","wǒ","tôi","我很好。"],
+["你","nǐ","bạn","你好吗？"],
+["您","nín","ngài, ông/bà, thầy/cô","您好！"],
+["他","tā","anh ấy","他很好。"],
+["她","tā","cô ấy","她很好。"],
+["我们","wǒmen","chúng tôi/chúng ta","我们很好。"],
+["你们","nǐmen","các bạn","你们好！"],
+["他们","tāmen","họ (nam/hỗn hợp)","他们很好。"],
+["她们","tāmen","họ (nữ)","她们很好。"],
+["好","hǎo","tốt, khỏe","很好。"],
+["谢谢","xièxie","cảm ơn","谢谢！"],
+["不客气","bú kèqi","không có gì","不客气！"],
+["吗","ma","trợ từ nghi vấn","你好吗？"],
+["很","hěn","rất","我很好。"],
+["老师","lǎoshī","giáo viên","老师好！"]
+].sort(()=>Math.random()-.5);
+let fi=0,shown=false;
+function renderCard(){let v=vocab[fi];$("fcHanzi").textContent=v[0];$("fcPinyin").textContent=v[1];$("fcMeaning").textContent=v[2];$("fcExample").textContent=v[3];$("fcDetail").style.display=shown?"block":"none";$("cardCount").textContent=`Thẻ ${fi+1}/${vocab.length} · Đã nhớ ${known}`}
+function toggleCard(){shown=!shown;renderCard()}function nextCard(){fi=(fi+1)%vocab.length;shown=false;renderCard()}function prevCard(){fi=(fi-1+vocab.length)%vocab.length;shown=false;renderCard()}function rememberCard(){known++;add(1);nextCard()}function shuffleCards(){vocab.sort(()=>Math.random()-.5);fi=0;shown=false;renderCard()}$("flashCard").onclick=toggleCard;renderCard();
+
+const toneQs=[
+["Chọn âm mang thanh 3",["mā","má","mǎ","mà"],"mǎ"],
+["Chọn âm mang thanh 2",["ní","nǐ","nì","nī"],"ní"],
+["Chọn cách đọc đúng của 好",["hāo","háo","hǎo","hào"],"hǎo"],
+["Chọn cách đọc đúng của 你",["nī","ní","nǐ","nì"],"nǐ"]
+];let toi=0;
+function renderTone(){let q=toneQs[toi];$("toneQ").textContent=q[0];$("toneOpts").innerHTML="";$("toneFb").textContent="";q[1].forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{[...$("toneOpts").children].forEach(x=>x.disabled=true);if(o===q[2]){b.classList.add("correct");$("toneFb").textContent="Chính xác!";$("toneFb").className="feedback ok";add(2)}else{b.classList.add("wrong");$("toneFb").textContent="Đáp án: "+q[2];$("toneFb").className="feedback bad";add(0)}};$("toneOpts").appendChild(b)})}
+function nextTone(){toi=(toi+1)%toneQs.length;renderTone()}renderTone();
+
+const typing=[["tôi","我"],["bạn","你"],["ngài / thầy cô","您"],["anh ấy","他"],["cô ấy","她"],["xin chào","你好"],["cảm ơn","谢谢"],["giáo viên","老师"],["các bạn","你们"],["chúng tôi","我们"]];let tyi=0;
+function renderType(){$("typeQ").textContent=typing[tyi][0];$("typeInput").value="";$("typeFb").textContent="";$("typeFb").className="feedback"}
+function checkType(){if(norm($("typeInput").value)===typing[tyi][1]){$("typeFb").textContent="Chính xác!";$("typeFb").className="feedback ok";add(2)}else{$("typeFb").textContent="Đáp án: "+typing[tyi][1];$("typeFb").className="feedback bad";add(0)}}
+function showType(){$("typeFb").textContent="Đáp án: "+typing[tyi][1]}
+function nextType(){tyi=(tyi+1)%typing.length;renderType()}renderType();
+
+const choices=[
+["“您好” dùng trong trường hợp nào?",["Chào bạn thân","Chào người lớn/thầy cô","Tạm biệt","Cảm ơn"],"Chào người lớn/thầy cô"],
+["“我们” nghĩa là gì?",["các bạn","họ","chúng tôi/chúng ta","cô ấy"],"chúng tôi/chúng ta"],
+["“她” nghĩa là gì?",["anh ấy","cô ấy","tôi","bạn"],"cô ấy"],
+["你好吗？",["Bạn tên gì?","Bạn khỏe không?","Bạn là ai?","Bạn đi đâu?"],"Bạn khỏe không?"],
+["我很好，谢谢！",["Tôi rất khỏe, cảm ơn!","Tôi không khỏe.","Xin chào các bạn.","Không có gì."],"Tôi rất khỏe, cảm ơn!"],
+["“老师好” nghĩa là gì?",["Cảm ơn thầy cô","Chào thầy/cô","Tạm biệt thầy cô","Thầy cô khỏe không?"],"Chào thầy/cô"]
+];let ci=0;
+function renderChoice(){let q=choices[ci];$("choiceQ").textContent=q[0];$("choiceOpts").innerHTML="";$("choiceFb").textContent="";q[1].slice().sort(()=>Math.random()-.5).forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{[...$("choiceOpts").children].forEach(x=>x.disabled=true);if(o===q[2]){b.classList.add("correct");$("choiceFb").textContent="Chính xác!";$("choiceFb").className="feedback ok";add(2)}else{b.classList.add("wrong");$("choiceFb").textContent="Đáp án: "+q[2];$("choiceFb").className="feedback bad";add(0)}};$("choiceOpts").appendChild(b)})}
+function nextChoice(){ci=(ci+1)%choices.length;renderChoice()}renderChoice();
+
+const dialogueQs=[
+["马丁怎么跟林娜打招呼？",["你好！","您好！","老师好！"],"你好！"],
+["阿明怎么跟李一民打招呼？",["你们好！","您好！","谢谢！"],"您好！"],
+["老师来了，学生应该说什么？",["老师好！","你好吗？","不客气！"],"老师好！"]
+];
+function renderDialogue(){let host=$("dialogueQuiz");dialogueQs.forEach((q,i)=>{let c=document.createElement("div");c.className="card";c.innerHTML=`<div class="qtitle">${i+1}. ${q[0]}</div>`;q[1].forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{c.querySelectorAll("button").forEach(x=>x.disabled=true);if(o===q[2]){b.classList.add("correct");add(3)}else{b.classList.add("wrong");add(0)}};c.appendChild(b)});host.appendChild(c)})}renderDialogue();
+
+const nums=[["0","零","líng"],["1","一","yī"],["2","二","èr"],["3","三","sān"],["4","四","sì"],["5","五","wǔ"],["6","六","liù"],["7","七","qī"],["8","八","bā"],["9","九","jiǔ"],["10","十","shí"]];
+nums.forEach(n=>{let b=document.createElement("button");b.className="tone";b.innerHTML=`<b>${n[0]}</b><div>${n[1]}</div><div class="small">${n[2]}</div>`;b.onclick=()=>alert(`${n[0]} = ${n[1]} (${n[2]})`);$("numberGrid").appendChild(b)});
+let ni=0;
+function renderNumber(){let q=nums[ni];$("numberQ").textContent=`Số ${q[0]} viết bằng chữ Hán là gì?`;$("numberOpts").innerHTML="";$("numberFb").textContent="";let opts=[q[1],...nums.filter(x=>x[1]!==q[1]).sort(()=>Math.random()-.5).slice(0,3).map(x=>x[1])].sort(()=>Math.random()-.5);opts.forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{[...$("numberOpts").children].forEach(x=>x.disabled=true);if(o===q[1]){b.classList.add("correct");$("numberFb").textContent="Chính xác!";$("numberFb").className="feedback ok";add(2)}else{b.classList.add("wrong");$("numberFb").textContent="Đáp án: "+q[1];$("numberFb").className="feedback bad";add(0)}};$("numberOpts").appendChild(b)})}
+function nextNumber(){ni=(ni+1)%nums.length;renderNumber()}renderNumber();
+</script>
+</body>
+</html>
