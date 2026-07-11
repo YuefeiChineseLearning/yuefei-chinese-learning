@@ -1,6 +1,6 @@
 // Chỉ sửa file này MỘT LẦN.
 window.YUEFEI_CONFIG = {
-  githubUser: "bryan19930105",
+ githubUser: "YuefeiChineseLearning",
   repository: "yuefei-chinese-learning",
   branch: "main",
   lessonsFolder: "lessons"
