@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0ea5e9">
+<title>Yuefei - Bài 6: 香蕉多少钱一斤？</title>
+<style>
+:root{
+  --blue:#0ea5e9;--blue2:#0284c7;--sky:#38bdf8;--bg:#f2f9fd;--card:#fff;
+  --text:#172033;--muted:#667085;--line:#d8eaf4;--ok:#16a34a;--bad:#dc2626;--warn:#d97706
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif}
+button,input{font:inherit}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,var(--blue2),var(--sky));color:#fff;padding:14px 16px 12px;box-shadow:0 4px 16px #0284c733}
+.brand{font-size:18px;font-weight:800}.sub{font-size:13px;margin-top:4px}
+.progress-wrap{height:8px;background:#ffffff44;border-radius:99px;margin-top:10px;overflow:hidden}.progress{height:100%;background:#fff;width:0;transition:.2s}
+nav{position:sticky;top:82px;z-index:19;display:flex;gap:8px;overflow:auto;background:#fff;padding:10px;border-bottom:1px solid var(--line);scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:99px;padding:10px 14px;font-weight:700;color:#075985}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+main{max-width:880px;margin:auto;padding:12px 12px 92px}.section{display:none}.section.active{display:block}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 8px 22px #0369a10d}
+h2,h3{margin:0 0 10px}.note{font-size:14px;color:var(--muted);line-height:1.55}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.flash{min-height:285px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(180deg,#fff,#f0f9ff);border:2px solid #bae6fd;border-radius:22px;padding:24px}
+.hz{font-size:54px;font-weight:800}.py{font-size:22px;color:var(--blue2);font-weight:800;margin-top:10px}.mean{font-size:20px;margin-top:8px}.ex{color:#475467;margin-top:12px;line-height:1.5}
+.row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}.btn{flex:1;border:0;border-radius:14px;padding:12px 14px;font-weight:800;min-width:110px}
+.primary{background:var(--blue);color:#fff}.secondary{background:#e8f5fb;color:#075985}.goodbtn{background:#dcfce7;color:#166534}.warnbtn{background:#fff7ed;color:#9a3412}
+.option{width:100%;text-align:left;border:1px solid var(--line);background:#fff;padding:12px 14px;border-radius:14px;margin:8px 0}
+.correct{background:#ecfdf3!important;border-color:var(--ok)!important}.wrong{background:#fff1f2!important;border-color:var(--bad)!important}
+.feedback{font-weight:800;min-height:24px;margin-top:8px}.ok{color:var(--ok)}.bad{color:var(--bad)}
+.input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid #b8ddea;background:#fff;border-radius:99px;padding:9px 12px;font-weight:700}
+.answer{min-height:52px;border:2px dashed #b8ddea;border-radius:14px;padding:10px;margin-top:10px}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.match-item{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px;text-align:center;font-weight:700}
+.match-item.sel{outline:3px solid #7dd3fc}.match-item.done{background:#ecfdf3;border-color:var(--ok)}
+.dialogue p{line-height:1.75}.speaker{font-weight:800;color:var(--blue2)}
+.badge{display:inline-block;background:#e0f2fe;color:#075985;border-radius:99px;padding:5px 10px;font-size:12px;font-weight:800}
+.product{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff;text-align:center}
+.product .icon{font-size:42px}.product b{display:block;font-size:18px;margin:6px 0}.product small{color:var(--muted)}
+footer{position:fixed;bottom:0;left:0;right:0;background:#fffffff2;border-top:1px solid var(--line);padding:10px 12px;z-index:30;backdrop-filter:blur(8px)}
+.footer-inner{max-width:880px;margin:auto;display:flex;gap:10px;align-items:center}.score{font-weight:800;flex:1}
+@media(max-width:580px){.grid,.match-grid{grid-template-columns:1fr}.hz{font-size:47px}.card{padding:14px}.btn{min-width:90px}}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">YUEFEI CHINESE LEARNING</div>
+<div class="sub">Bài 6 · 第六课：香蕉多少钱一斤？</div>
+<div class="progress-wrap"><div class="progress" id="progress"></div></div>
+</header>
+
+<nav>
+<button class="tab active" data-tab="overview">Tổng quan</button>
+<button class="tab" data-tab="flash">Lật thẻ</button>
+<button class="tab" data-tab="choice">Trắc nghiệm</button>
+<button class="tab" data-tab="typing">Gõ chữ Hán</button>
+<button class="tab" data-tab="translate">Bài dịch</button>
+<button class="tab" data-tab="order">Sắp xếp câu</button>
+<button class="tab" data-tab="match">Nối từ</button>
+<button class="tab" data-tab="money">Tiền & số</button>
+<button class="tab" data-tab="dialogue">Hội thoại</button>
+<button class="tab" data-tab="reading">Bài khóa</button>
+</nav>
+
+<main>
+<section id="overview" class="section active">
+<div class="card"><h2>香蕉多少钱一斤？</h2><p class="note">Mục tiêu: hỏi giá, mua đồ, dùng 想 / 要 / 买, nói số trên 100, lượng từ và tiền Nhân dân tệ.</p></div>
+<div class="grid">
+<div class="card"><h3>Mua hàng</h3><p>我想买……<br>我要……<br>你要哪种？</p></div>
+<div class="card"><h3>Hỏi giá</h3><p>多少钱？<br>多少钱一个？<br>多少钱一斤？</p></div>
+<div class="card"><h3>Lượng từ</h3><p>一部电子词典<br>一台电脑<br>一本书<br>一瓶矿泉水</p></div>
+<div class="card"><h3>Tiền tệ</h3><p>块 · 毛 · 分<br>一共多少钱？</p></div>
+</div>
+</section>
+
+<section id="flash" class="section">
+<div class="card"><h2>Lật thẻ từ vựng</h2><div class="note">Từ vựng được trộn giữa mua hàng, đồ vật, thực phẩm, lượng từ và tiền.</div></div>
+<div class="flash" id="flashCard"><div class="hz" id="fcHanzi"></div><div id="fcDetail" style="display:none"><div class="py" id="fcPinyin"></div><div class="mean" id="fcMeaning"></div><div class="ex" id="fcExample"></div></div></div>
+<div class="row"><button class="btn secondary" onclick="prevCard()">← Trước</button><button class="btn primary" onclick="toggleCard()">Lật thẻ</button><button class="btn secondary" onclick="nextCard()">Tiếp →</button></div>
+<div class="row"><button class="btn goodbtn" onclick="rememberCard()">Đã nhớ</button><button class="btn warnbtn" onclick="shuffleCards()">Trộn thẻ</button></div><div class="card" id="cardCount"></div>
+</section>
+
+<section id="choice" class="section">
+<div class="card"><h2>Trắc nghiệm tổng hợp</h2><div id="choiceQ"></div><div id="choiceOpts"></div><div id="choiceFb" class="feedback"></div><div class="row"><button class="btn secondary" onclick="shuffleChoice()">Trộn câu</button><button class="btn primary" onclick="nextChoice()">Đổi câu</button></div></div>
+</section>
+
+<section id="typing" class="section">
+<div class="card"><h2>Gõ chữ Hán</h2><div id="typeQ"></div><input id="typeInput" class="input" placeholder="Nhập chữ Hán..."><div class="row"><button class="btn secondary" onclick="showType()">Xem đáp án</button><button class="btn primary" onclick="checkType()">Kiểm tra</button></div><div id="typeFb" class="feedback"></div><div class="row"><button class="btn secondary" onclick="shuffleType()">Trộn câu</button><button class="btn goodbtn" onclick="nextType()">Đổi câu</button></div></div>
+</section>
+
+<section id="translate" class="section">
+<div class="card"><h2>Dịch Việt → Trung</h2><div id="transQ"></div><input id="transInput" class="input" placeholder="Nhập câu tiếng Trung..."><div class="row"><button class="btn secondary" onclick="showTrans()">Xem đáp án</button><button class="btn primary" onclick="checkTrans()">Kiểm tra</button></div><div id="transFb" class="feedback"></div><div class="row"><button class="btn secondary" onclick="shuffleTrans()">Trộn câu</button><button class="btn goodbtn" onclick="nextTrans()">Đổi câu</button></div></div>
+</section>
+
+<section id="order" class="section">
+<div class="card"><h2>Sắp xếp thành câu đúng</h2><div id="orderQ"></div><div class="chips" id="orderChips"></div><div class="answer" id="orderAns"></div><div class="row"><button class="btn secondary" onclick="renderOrder()">Làm lại</button><button class="btn primary" onclick="checkOrder()">Kiểm tra</button></div><div id="orderFb" class="feedback"></div><div class="row"><button class="btn secondary" onclick="shuffleOrder()">Trộn câu</button><button class="btn goodbtn" onclick="nextOrder()">Đổi câu</button></div></div>
+</section>
+
+<section id="match" class="section">
+<div class="card"><h2>Nối từ</h2><div class="note">Chọn từ Hán rồi chọn nghĩa đúng.</div></div>
+<div class="card"><div class="match-grid" id="matchGrid"></div><div id="matchFb" class="feedback"></div><div class="row"><button class="btn secondary" onclick="newMatch()">Trộn lại</button><button class="btn primary" onclick="newMatch()">Bộ mới</button></div></div>
+</section>
+
+<section id="money" class="section">
+<div class="card"><h2>Tiền tệ và số trên 100</h2><div class="note">Luyện đọc số, giá tiền và cách viết đơn vị.</div></div>
+<div class="grid">
+<div class="product"><div class="icon">📱</div><b>手机</b><small>điện thoại</small></div>
+<div class="product"><div class="icon">💻</div><b>电脑</b><small>máy tính</small></div>
+<div class="product"><div class="icon">📖</div><b>汉语书</b><small>sách tiếng Trung</small></div>
+<div class="product"><div class="icon">🍌</div><b>香蕉</b><small>chuối</small></div>
+<div class="product"><div class="icon">🍎</div><b>苹果</b><small>táo</small></div>
+<div class="product"><div class="icon">☕</div><b>咖啡</b><small>cà phê</small></div>
+</div>
+<div class="card"><h3>Chọn cách đọc đúng</h3><div id="moneyQ"></div><div id="moneyOpts"></div><div id="moneyFb" class="feedback"></div><div class="row"><button class="btn secondary" onclick="shuffleMoney()">Trộn câu</button><button class="btn primary" onclick="nextMoney()">Đổi câu</button></div></div>
+</section>
+
+<section id="dialogue" class="section">
+<div class="card"><h2>Hoàn thành hội thoại mua hàng</h2><div id="dialogueQ"></div><div id="dialogueOpts"></div><div id="dialogueFb" class="feedback"></div><div class="row"><button class="btn secondary" onclick="shuffleDialogue()">Trộn câu</button><button class="btn primary" onclick="nextDialogue()">Đổi câu</button></div></div>
+</section>
+
+<section id="reading" class="section">
+<div class="card dialogue">
+<span class="badge">课文一</span>
+<h2 style="margin-top:10px">买电子词典和电脑</h2>
+<p>马丁想买电子词典和电脑。</p>
+<p>一部电子词典七百八十块钱，一台电脑五千九百块钱。</p>
+<p>一共需要六千六百八十块钱。</p>
+</div>
+<div class="card dialogue">
+<span class="badge">课文二</span>
+<h2 style="margin-top:10px">买面包</h2>
+<p><span class="speaker">营业员：</span>你好！请问，你要什么？</p>
+<p><span class="speaker">马丁：</span>我要一个面包。</p>
+<p><span class="speaker">营业员：</span>你要哪种？</p>
+<p><span class="speaker">马丁：</span>我要这种。这种多少钱一个？</p>
+<p><span class="speaker">营业员：</span>这种四块五一个。</p>
+<p><span class="speaker">马丁：</span>我要两个。</p>
+<p><span class="speaker">营业员：</span>一共九块。</p>
+</div>
+<div class="card dialogue">
+<span class="badge">课文三</span>
+<h2 style="margin-top:10px">市场买水果</h2>
+<p><span class="speaker">马丁：</span>请问，香蕉多少钱一斤？</p>
+<p><span class="speaker">营业员：</span>一块八一斤。</p>
+<p><span class="speaker">马丁：</span>苹果呢？</p>
+<p><span class="speaker">营业员：</span>三块五一斤。您买多少？</p>
+<p><span class="speaker">马丁：</span>我买四斤香蕉，再买三斤苹果。一共多少钱？</p>
+<p><span class="speaker">营业员：</span>一共十七块七。</p>
+</div>
+<div class="card"><h3>Đọc hiểu</h3><div id="readQ"></div><div id="readOpts"></div><div id="readFb" class="feedback"></div><div class="row"><button class="btn secondary" onclick="shuffleRead()">Trộn câu</button><button class="btn primary" onclick="nextRead()">Đổi câu</button></div></div>
+</section>
+</main>
+
+<footer><div class="footer-inner"><div id="scoreText" class="score">Điểm: 0 · Đã làm: 0</div><button class="btn secondary" style="flex:0 0 auto" onclick="location.reload()">Làm lại</button></div></footer>
+
+<script>
+const $=id=>document.getElementById(id);let score=0,done=0,known=0;
+function add(n){score+=n;done++;$("scoreText").textContent=`Điểm: ${score} · Đã làm: ${done}`;$("progress").style.width=Math.min(100,done/50*100)+"%"}
+function norm(s){return(s||"").replace(/[，。！？,.!?；;：:\s]/g,"")}
+function shuffle(a){return a.sort(()=>Math.random()-.5)}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")});
+
+const vocab=[
+["想","xiǎng","muốn, dự định","我想买电脑。"],["买","mǎi","mua","我要买苹果。"],["要","yào","muốn, cần","你要什么？"],["电子词典","diànzǐ cídiǎn","kim từ điển","我想买电子词典。"],["电脑","diànnǎo","máy tính","这台电脑多少钱？"],["手机","shǒujī","điện thoại","你的手机多少钱？"],["部","bù","lượng từ cho sách/thiết bị","一部电子词典。"],["台","tái","lượng từ cho máy móc","一台电脑。"],["本","běn","lượng từ cho sách","一本汉语书。"],["块","kuài","tệ, đồng","五块钱。"],["毛","máo","hào, 1/10 tệ","两块二毛。"],["分","fēn","xu, 1/100 tệ","五分。"],["钱","qián","tiền","多少钱？"],["一共","yígòng","tổng cộng","一共多少钱？"],["需要","xūyào","cần","一共需要六千块。"],["营业员","yíngyèyuán","nhân viên bán hàng","营业员问马丁。"],["面包","miànbāo","bánh mì","我要两个面包。"],["种","zhǒng","loại","你要哪种？"],["这","zhè","này","我要这种。"],["谢谢","xièxie","cảm ơn","谢谢！"],["不客气","bú kèqi","không có gì","不客气！"],["香蕉","xiāngjiāo","chuối","香蕉多少钱一斤？"],["斤","jīn","cân Trung Quốc","一斤香蕉。"],["苹果","píngguǒ","táo","苹果三块五一斤。"],["再","zài","lại, thêm nữa","再买三斤苹果。"],["咖啡","kāfēi","cà phê","一杯咖啡。"],["牛奶","niúnǎi","sữa bò","一袋牛奶。"],["啤酒","píjiǔ","bia","一瓶啤酒。"],["矿泉水","kuàngquánshuǐ","nước khoáng","一瓶矿泉水。"],["可乐","kělè","coca-cola","一瓶可乐。"],["草莓","cǎoméi","dâu tây","草莓多少钱一斤？"],["西瓜","xīguā","dưa hấu","西瓜怎么卖？"],["橘子","júzi","quýt","橘子两块八一斤。"]
+];shuffle(vocab);
+let fi=0,shown=false;
+function renderCard(){let v=vocab[fi];fcHanzi.textContent=v[0];fcPinyin.textContent=v[1];fcMeaning.textContent=v[2];fcExample.textContent=v[3];fcDetail.style.display=shown?"block":"none";cardCount.textContent=`Thẻ ${fi+1}/${vocab.length} · Đã nhớ ${known}`}
+function toggleCard(){shown=!shown;renderCard()}function nextCard(){fi=(fi+1)%vocab.length;shown=false;renderCard()}function prevCard(){fi=(fi-1+vocab.length)%vocab.length;shown=false;renderCard()}function rememberCard(){known++;add(1);nextCard()}function shuffleCards(){shuffle(vocab);fi=0;shown=false;renderCard()}flashCard.onclick=toggleCard;renderCard();
+
+const choices=[
+["“想” nghĩa là gì?",["muốn, dự định","mua","cần","bán"],"muốn, dự định"],
+["“一部电子词典” dùng lượng từ nào?",["部","台","本","瓶"],"部"],
+["“一台电脑” dùng lượng từ nào?",["台","部","本","个"],"台"],
+["“多少钱？” nghĩa là gì?",["Bao nhiêu tiền?","Bao nhiêu cái?","Bạn mua gì?","Bạn muốn loại nào?"],"Bao nhiêu tiền?"],
+["“一共” nghĩa là gì?",["tổng cộng","mỗi cái","thêm nữa","loại này"],"tổng cộng"],
+["“营业员” nghĩa là gì?",["nhân viên bán hàng","khách hàng","giáo viên","thư ký"],"nhân viên bán hàng"],
+["“哪种” nghĩa là gì?",["loại nào","bao nhiêu","cái này","bao nhiêu tiền"],"loại nào"],
+["“一斤” là gì?",["một cân Trung Quốc","một kilogram","một cái","một chai"],"một cân Trung Quốc"],
+["“香蕉” nghĩa là gì?",["chuối","táo","dâu tây","dưa hấu"],"chuối"],
+["“再买三斤苹果” nghĩa là gì?",["Mua thêm ba cân táo","Mua ba quả táo","Không mua táo","Mua lại một cân táo"],"Mua thêm ba cân táo"],
+["“不客气” dùng khi nào?",["Đáp lại lời cảm ơn","Hỏi giá","Mua hàng","Tạm biệt"],"Đáp lại lời cảm ơn"],
+["“这台电脑多少钱？”",["Máy tính này bao nhiêu tiền?","Điện thoại này bao nhiêu tiền?","Bạn có máy tính không?","Bạn muốn mua máy tính nào?"],"Máy tính này bao nhiêu tiền?"]
+];let ci=0;
+function renderChoice(){let q=choices[ci];choiceQ.textContent=q[0];choiceOpts.innerHTML="";choiceFb.textContent="";shuffle(q[1].slice()).forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{[...choiceOpts.children].forEach(x=>x.disabled=true);if(o===q[2]){b.classList.add("correct");choiceFb.textContent="Chính xác!";choiceFb.className="feedback ok";add(2)}else{b.classList.add("wrong");choiceFb.textContent="Đáp án: "+q[2];choiceFb.className="feedback bad";add(0)}};choiceOpts.appendChild(b)})}
+function nextChoice(){ci=(ci+1)%choices.length;renderChoice()}function shuffleChoice(){shuffle(choices);ci=0;renderChoice()}renderChoice();
+
+const typing=[["muốn, dự định","想"],["mua","买"],["máy tính","电脑"],["điện thoại","手机"],["bánh mì","面包"],["chuối","香蕉"],["táo","苹果"],["tổng cộng","一共"],["bao nhiêu tiền","多少钱"],["nhân viên bán hàng","营业员"],["nước khoáng","矿泉水"],["dâu tây","草莓"],["dưa hấu","西瓜"],["cà phê","咖啡"],["cảm ơn","谢谢"]];let ti=0;
+function renderType(){typeQ.textContent=typing[ti][0];typeInput.value="";typeFb.textContent=""}
+function checkType(){if(norm(typeInput.value)===norm(typing[ti][1])){typeFb.textContent="Chính xác!";typeFb.className="feedback ok";add(2)}else{typeFb.textContent="Đáp án: "+typing[ti][1];typeFb.className="feedback bad";add(0)}}
+function showType(){typeFb.textContent="Đáp án: "+typing[ti][1]}function nextType(){ti=(ti+1)%typing.length;renderType()}function shuffleType(){shuffle(typing);ti=0;renderType()}renderType();
+
+const trans=[
+["Tôi muốn mua máy tính.","我想买电脑"],["Tôi muốn mua một chiếc điện thoại.","我想买一个手机"],["Máy tính này bao nhiêu tiền?","这台电脑多少钱"],["Tôi muốn một cái bánh mì.","我要一个面包"],["Bạn muốn loại nào?","你要哪种"],["Loại này bao nhiêu tiền một cái?","这种多少钱一个"],["Tôi muốn hai cái.","我要两个"],["Tổng cộng chín tệ.","一共九块"],["Chuối bao nhiêu tiền một cân?","香蕉多少钱一斤"],["Táo thì sao?","苹果呢"],["Tôi mua bốn cân chuối.","我买四斤香蕉"],["Mua thêm ba cân táo.","再买三斤苹果"],["Tổng cộng bao nhiêu tiền?","一共多少钱"],["Cảm ơn!","谢谢"],["Không có gì!","不客气"]
+];let tri=0;
+function renderTrans(){transQ.textContent=trans[tri][0];transInput.value="";transFb.textContent=""}
+function checkTrans(){if(norm(transInput.value)===norm(trans[tri][1])){transFb.textContent="Chính xác!";transFb.className="feedback ok";add(3)}else{transFb.textContent="Đáp án: "+trans[tri][1]+"。";transFb.className="feedback bad";add(0)}}
+function showTrans(){transFb.textContent="Đáp án: "+trans[tri][1]+"。"}function nextTrans(){tri=(tri+1)%trans.length;renderTrans()}function shuffleTrans(){shuffle(trans);tri=0;renderTrans()}renderTrans();
+
+const orders=[
+["Máy tính này bao nhiêu tiền?",["这","台","电脑","多少钱"],"这台电脑多少钱"],
+["Tôi không muốn mua chuối.",["我","不","想","买","香蕉"],"我不想买香蕉"],
+["Tôi muốn mua thêm một quyển sách tiếng Trung.",["我","想","再","买","一本","汉语书"],"我想再买一本汉语书"],
+["Bạn muốn loại bánh mì nào?",["你","要","哪","种","面包"],"你要哪种面包"],
+["Một bộ kim từ điển này giá 1.290 tệ.",["这","部","电子词典","一千二百九十块钱"],"这部电子词典一千二百九十块钱"],
+["Chuối bao nhiêu tiền một cân?",["香蕉","多少钱","一斤"],"香蕉多少钱一斤"],
+["Tôi mua bốn cân chuối.",["我","买","四斤","香蕉"],"我买四斤香蕉"],
+["Tổng cộng bao nhiêu tiền?",["一共","多少钱"],"一共多少钱"]
+];let oi=0,picked=[];
+function renderOrder(){let q=orders[oi];orderQ.textContent=q[0];orderChips.innerHTML="";orderAns.textContent="";orderFb.textContent="";picked=[];shuffle(q[1].slice()).forEach(w=>{let b=document.createElement("button");b.className="chip";b.textContent=w;b.onclick=()=>{picked.push(w);b.disabled=true;orderAns.textContent=picked.join(" ")};orderChips.appendChild(b)})}
+function checkOrder(){if(norm(picked.join(""))===norm(orders[oi][2])){orderFb.textContent="Chính xác!";orderFb.className="feedback ok";add(3)}else{orderFb.textContent="Đáp án: "+orders[oi][2]+"。";orderFb.className="feedback bad";add(0)}}
+function nextOrder(){oi=(oi+1)%orders.length;renderOrder()}function shuffleOrder(){shuffle(orders);oi=0;renderOrder()}renderOrder();
+
+const matchData=[["电脑","máy tính"],["手机","điện thoại"],["面包","bánh mì"],["香蕉","chuối"],["苹果","táo"],["咖啡","cà phê"],["牛奶","sữa bò"],["矿泉水","nước khoáng"],["一共","tổng cộng"],["营业员","nhân viên bán hàng"],["部","lượng từ cho sách/thiết bị"],["台","lượng từ cho máy móc"]];
+let leftSel=null,rightSel=null,matchPairs=[];
+function newMatch(){matchGrid.innerHTML="";matchFb.textContent="";leftSel=null;rightSel=null;matchPairs=shuffle(matchData.slice()).slice(0,6);let left=shuffle(matchPairs.map(x=>x[0]).slice()),right=shuffle(matchPairs.map(x=>x[1]).slice());left.forEach(t=>{let b=document.createElement("button");b.className="match-item";b.textContent=t;b.dataset.side="l";b.onclick=()=>pickMatch(b);matchGrid.appendChild(b)});right.forEach(t=>{let b=document.createElement("button");b.className="match-item";b.textContent=t;b.dataset.side="r";b.onclick=()=>pickMatch(b);matchGrid.appendChild(b)})}
+function pickMatch(b){if(b.classList.contains("done"))return;if(b.dataset.side==="l"){document.querySelectorAll('[data-side="l"]').forEach(x=>x.classList.remove("sel"));leftSel=b;b.classList.add("sel")}else{document.querySelectorAll('[data-side="r"]').forEach(x=>x.classList.remove("sel"));rightSel=b;b.classList.add("sel")}if(leftSel&&rightSel){let ok=matchPairs.some(x=>x[0]===leftSel.textContent&&x[1]===rightSel.textContent);if(ok){leftSel.classList.add("done");rightSel.classList.add("done");matchFb.textContent="Đúng!";matchFb.className="feedback ok";add(2)}else{matchFb.textContent="Chưa đúng, thử lại.";matchFb.className="feedback bad"}leftSel.classList.remove("sel");rightSel.classList.remove("sel");leftSel=null;rightSel=null}}
+newMatch();
+
+const moneyQs=[
+["101 đọc thế nào?",["一百零一","一百一","一千零一","十一"],"一百零一"],
+["202 đọc thế nào?",["二百零二","两百二","二百二十","二千零二"],"二百零二"],
+["515 đọc thế nào?",["五百一十五","五百十五","五千一十五","五百零十五"],"五百一十五"],
+["818 đọc thế nào?",["八百一十八","八百十八","八千一十八","八百零十八"],"八百一十八"],
+["1001 đọc thế nào?",["一千零一","一千一","一百零一","一万零一"],"一千零一"],
+["2015 đọc thế nào?",["二千零十五","二千十五","二百零十五","二万零十五"],"二千零十五"],
+["2.20元 đọc thế nào?",["两块二","两块二毛","两块零二分","二十块"],"两块二"],
+["5.02元 đọc thế nào?",["五块零二分","五块二毛","五毛二分","五十二块"],"五块零二分"],
+["0.20元 đọc thế nào?",["两毛","二分","两块","二十块"],"两毛"],
+["100.08元 đọc thế nào?",["一百块零八分","一百零八块","一百块八毛","十块零八分"],"一百块零八分"]
+];let mi=0;
+function renderMoney(){let q=moneyQs[mi];moneyQ.textContent=q[0];moneyOpts.innerHTML="";moneyFb.textContent="";shuffle(q[1].slice()).forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{[...moneyOpts.children].forEach(x=>x.disabled=true);if(o===q[2]){b.classList.add("correct");moneyFb.textContent="Chính xác!";moneyFb.className="feedback ok";add(2)}else{b.classList.add("wrong");moneyFb.textContent="Đáp án: "+q[2];moneyFb.className="feedback bad";add(0)}};moneyOpts.appendChild(b)})}
+function nextMoney(){mi=(mi+1)%moneyQs.length;renderMoney()}function shuffleMoney(){shuffle(moneyQs);mi=0;renderMoney()}renderMoney();
+
+const dialogues=[
+["A: 你想买什么？\nB: ______。",["我想买手机","我想多少钱","我想哪种"],"我想买手机"],
+["A: 请问，这本汉语书多少钱？\nB: ______。",["三十块","我要两本","这本书"],"三十块"],
+["A: 你要哪种面包？\nB: ______。",["我要这种","我要两个","一共九块"],"我要这种"],
+["A: 这种多少钱一个？\nB: ______。",["四块五一个","我要两个","谢谢"],"四块五一个"],
+["A: 苹果呢？\nB: ______。",["三块五一斤","我要苹果","一共十七块七"],"三块五一斤"],
+["A: 您买多少？\nB: ______。",["我买四斤香蕉","香蕉一块八","一共多少钱"],"我买四斤香蕉"],
+["A: 一共多少钱？\nB: ______。",["一共十七块七","我买苹果","多少钱一斤"],"一共十七块七"]
+];let di=0;
+function renderDialogue(){let q=dialogues[di];dialogueQ.innerHTML=q[0].replace(/\n/g,"<br>");dialogueOpts.innerHTML="";dialogueFb.textContent="";shuffle(q[1].slice()).forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{[...dialogueOpts.children].forEach(x=>x.disabled=true);if(o===q[2]){b.classList.add("correct");dialogueFb.textContent="Chính xác!";dialogueFb.className="feedback ok";add(3)}else{b.classList.add("wrong");dialogueFb.textContent="Đáp án: "+q[2];dialogueFb.className="feedback bad";add(0)}};dialogueOpts.appendChild(b)})}
+function nextDialogue(){di=(di+1)%dialogues.length;renderDialogue()}function shuffleDialogue(){shuffle(dialogues);di=0;renderDialogue()}renderDialogue();
+
+const reads=[
+["马丁想买什么？",["电子词典和电脑","手机和面包","香蕉和苹果"],"电子词典和电脑"],
+["电子词典多少钱？",["七百八十块","五千九百块","六千六百八十块"],"七百八十块"],
+["电脑多少钱？",["五千九百块","七百八十块","六千块"],"五千九百块"],
+["电子词典和电脑一共多少钱？",["六千六百八十块","五千九百块","七百八十块"],"六千六百八十块"],
+["马丁买几个面包？",["两个","一个","三个"],"两个"],
+["面包一共多少钱？",["九块","四块五","十块"],"九块"],
+["香蕉多少钱一斤？",["一块八","三块五","两块八"],"一块八"],
+["苹果多少钱一斤？",["三块五","一块八","五块五"],"三块五"],
+["马丁买几斤香蕉？",["四斤","三斤","两斤"],"四斤"],
+["马丁买几斤苹果？",["三斤","四斤","两斤"],"三斤"],
+["水果一共多少钱？",["十七块七","十六块七","十八块七"],"十七块七"]
+];let ri=0;
+function renderRead(){let q=reads[ri];readQ.textContent=q[0];readOpts.innerHTML="";readFb.textContent="";shuffle(q[1].slice()).forEach(o=>{let b=document.createElement("button");b.className="option";b.textContent=o;b.onclick=()=>{[...readOpts.children].forEach(x=>x.disabled=true);if(o===q[2]){b.classList.add("correct");readFb.textContent="Chính xác!";readFb.className="feedback ok";add(3)}else{b.classList.add("wrong");readFb.textContent="Đáp án: "+q[2];readFb.className="feedback bad";add(0)}};readOpts.appendChild(b)})}
+function nextRead(){ri=(ri+1)%reads.length;renderRead()}function shuffleRead(){shuffle(reads);ri=0;renderRead()}renderRead();
+</script>
+</body>
+</html>
