@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YUEFEI · Bài 8 今天几号? · Ôn tập tổng hợp offline</title>
+  <style>
+    :root{
+      --bg:#f6f9fc;--card:#fff;--ink:#10233f;--muted:#5f7086;--line:#d8e5f2;
+      --blue:#2f6fa7;--blue2:#eaf4ff;--gold:#c4923e;--green:#19764b;--red:#b43b35;
+      --soft:#f3f8fe;--shadow:0 16px 34px rgba(38,74,110,.12);--radius:24px;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",Arial,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;background:radial-gradient(circle at 8% 4%,#e2f2ff 0 17rem,transparent 17.2rem),radial-gradient(circle at 92% 0,#fff0ca 0 15rem,transparent 15.2rem),linear-gradient(180deg,#fbfdff,var(--bg));min-height:100vh}
+    .wrap{width:min(1180px,94vw);margin:auto;padding:24px 0 46px}.brand{display:flex;align-items:center;gap:12px;color:var(--blue);font-weight:900;letter-spacing:.04em;margin-bottom:12px}.logo{width:0;height:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:21px solid var(--blue)}
+    header{display:grid;grid-template-columns:1.45fr .55fr;gap:18px;margin-bottom:16px}.hero,.statbox,.panel{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(8px)}.hero{padding:26px}.statbox{padding:18px;display:grid;gap:12px;align-content:center}
+    h1{margin:0;color:var(--blue);font-size:clamp(30px,5vw,54px);line-height:1.03;letter-spacing:-.04em}.sub{margin:10px 0 0;color:var(--muted);font-size:16px;line-height:1.55}.pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.pill{padding:7px 11px;border-radius:999px;background:var(--blue2);border:1px solid var(--line);color:var(--blue);font-weight:800;font-size:13px}.stat{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 12px;background:#fff;border:1px solid var(--line);border-radius:16px}.stat strong{font-size:24px;color:var(--blue)}.bar{height:10px;border-radius:99px;background:#edf4fb;overflow:hidden}.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#7bb3e2);width:0;transition:.2s}
+    nav{position:sticky;top:0;z-index:8;background:rgba(246,249,252,.9);backdrop-filter:blur(10px);padding:10px 0;margin-bottom:14px}.nav{display:flex;gap:8px;flex-wrap:wrap}
+    button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:15px;padding:10px 13px;font-weight:850;cursor:pointer;font-size:14px;transition:.15s transform,.15s border-color,.15s background}button:hover{transform:translateY(-1px);border-color:#aac9e3}button.active,button.primary{background:var(--blue);border-color:var(--blue);color:#fff}button.good{background:#eaf7ef;border-color:#b9dfc8;color:var(--green)}button.bad{background:#fff0ef;border-color:#e9bbb6;color:var(--red)}button.gold{background:#fff7e5;border-color:#edd39a;color:#8a6020}.panel{padding:20px;margin-bottom:16px}.section{display:none}.section.active{display:block}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    h2{margin:0 0 12px;color:#1e4b78;font-size:25px;letter-spacing:-.02em}h3{margin:0 0 10px;color:#1e4b78}.small{font-size:13px;color:var(--muted);line-height:1.45}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.tag{display:inline-flex;border-radius:999px;background:var(--blue2);color:var(--blue);border:1px solid var(--line);padding:4px 9px;font-size:12px;font-weight:900;margin-right:6px;vertical-align:middle}
+    .flashwrap{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px}.flashcard{height:410px;perspective:1300px;cursor:pointer}.inner{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}.flashcard.flipped .inner{transform:rotateY(180deg)}.face{position:absolute;inset:0;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;border-radius:30px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);padding:24px}.back{transform:rotateY(180deg);background:#fbfdff}.corner{position:absolute;top:18px;left:18px}.star{position:absolute;top:17px;right:20px;color:var(--gold);font-size:25px}.hanzi{font-family:"Noto Serif SC","Songti SC","SimSun",serif;font-size:clamp(72px,13vw,142px);font-weight:900;line-height:1.02;letter-spacing:.04em}.pinyin{font-size:31px;font-weight:900;color:var(--blue);margin:6px 0}.meaning{font-size:27px;font-weight:900;margin:4px 0}.note{font-size:16px;color:var(--muted);line-height:1.48;max-width:640px}.sidebox{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .search{width:100%;border:1px solid var(--line);border-radius:15px;padding:13px 14px;font-size:15px;margin-bottom:12px}.vocabGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.vocabCard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;min-height:132px;box-shadow:0 8px 18px rgba(38,74,110,.07);cursor:pointer}.vocabCard.done{background:#f0fbf4;border-color:#bfe4ce}.vcH{font-family:"Noto Serif SC","Songti SC",serif;font-size:40px;font-weight:900;line-height:1.08}.vcP{color:var(--blue);font-weight:850;margin-top:8px}.vcM{color:var(--muted);font-size:14px;margin-top:3px}.vcHidden .vcP,.vcHidden .vcM{visibility:hidden}.togglebox{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+    .question{font-size:24px;font-weight:900;margin:6px 0 14px;color:#1d456e;line-height:1.35}.options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.option{min-height:70px;text-align:left;padding:14px;background:#fff;border:1px solid var(--line);border-radius:16px;font-weight:850}.option.cn{font-family:"Noto Serif SC","Songti SC",serif;font-size:34px;text-align:center}.option.correct{background:#eaf7ef;border-color:#94d2ac;color:var(--green)}.option.wrong{background:#fff0ef;border-color:#e2aaa4;color:var(--red)}.feedback{min-height:28px;margin-top:10px;font-weight:900}.feedback.good{color:var(--green)}.feedback.bad{color:var(--red)}
+    .dateTool{display:grid;grid-template-columns:1fr 1fr;gap:14px}.dateBox{background:#fff;border:1px solid var(--line);border-radius:20px;padding:17px}.bigAnswer{font-size:25px;font-weight:900;color:#1d456e;margin:10px 0}.inputline{display:flex;gap:8px;flex-wrap:wrap;align-items:center}input[type="text"],select{border:1px solid var(--line);border-radius:14px;padding:12px 13px;font-size:16px;background:#fff;min-width:170px}.grammarGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.grammarCard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:17px;line-height:1.55}.pattern{background:#fff7e5;border:1px solid #efd7a5;border-radius:14px;padding:10px 12px;color:#81581c;font-size:19px;font-weight:900;margin:8px 0}.example{font-size:20px;font-weight:850;margin:7px 0}.vi{color:var(--muted)}
+    .textTabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.dialogue{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px}.line{padding:10px 0;border-bottom:1px dashed var(--line)}.line:last-child{border-bottom:0}.speaker{display:inline-block;min-width:52px;color:var(--blue);font-weight:900}.cnline{font-size:22px;font-weight:850}.pin{color:var(--blue);font-weight:800}.hidden{display:none!important}.qa{display:grid;gap:9px}.qaItem{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px}.answer{display:none;margin-top:8px;color:var(--green);font-weight:850}.qaItem.open .answer{display:block}.transBox{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px}.transQ{font-size:20px;font-weight:850;line-height:1.45}.transAns{display:none;margin-top:12px;padding:12px;background:#f4fbf7;border:1px solid #c6e6d0;border-radius:14px;color:var(--green);font-size:20px;font-weight:900}.transBox.show .transAns{display:block}.classifyGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}.classItem{padding:15px;background:#fff;border:1px solid var(--line);border-radius:16px;text-align:center;font-size:20px;font-weight:900;cursor:pointer}.classItem.right{background:#eaf7ef;border-color:#93d2aa;color:var(--green)}.classItem.wrong{background:#fff0ef;border-color:#e5aaa4;color:var(--red)}.worksheet{display:grid;gap:10px}.task{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}.task p{margin:8px 0}.kbd{font-family:ui-monospace,monospace;background:#eef5fc;border:1px solid var(--line);border-radius:8px;padding:2px 6px;color:#376a97}
+    @media(max-width:920px){header,.flashwrap,.grid2,.dateTool,.grammarGrid{grid-template-columns:1fr}.grid3,.options{grid-template-columns:1fr}nav{position:static}.flashcard{height:360px}}
+    @media print{nav,.filters,.actions,.statbox,.search,.togglebox,.noPrint{display:none!important}body{background:#fff}.wrap{width:100%;padding:0}.section{display:block!important}.panel,.hero{box-shadow:none;border:0}.flashwrap{display:block}.flashcard{display:none}.task,.grammarCard,.dialogue,.transBox{page-break-inside:avoid}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="hero">
+      <div class="brand"><span class="logo"></span><span>YUEFEI · 华语 · HOA NGỮ YUE FEI</span></div>
+      <h1>第八课 今天几号？<br>Ôn tập tổng hợp Bài 8</h1>
+      <p class="sub">Một file HTML offline để ôn toàn bộ bài 8: nhận mặt chữ, ngày tháng năm, thứ trong tuần, sinh nhật, bài khóa, ngữ pháp và dịch Việt → Hoa.</p>
+      <div class="pillrow"><span class="pill">Không cần mạng</span><span class="pill">Flashcards</span><span class="pill">Bài khóa 1–3</span><span class="pill">Ngữ pháp + dịch</span><span class="pill">Có thể in bài tập</span></div>
+    </div>
+    <aside class="statbox">
+      <div class="stat"><span>Đã nhớ từ</span><strong id="knownStat">0/0</strong></div>
+      <div class="bar"><span id="progressBar"></span></div>
+      <button class="primary" onclick="showSection('flash')">Bắt đầu ôn</button>
+    </aside>
+  </header>
+
+  <nav class="noPrint"><div class="nav">
+    <button class="active" data-sec="flash" onclick="showSection('flash')">Nhận mặt chữ</button>
+    <button data-sec="drill" onclick="showSection('drill')">Quiz chữ</button>
+    <button data-sec="date" onclick="showSection('date')">Ngày tháng</button>
+    <button data-sec="texts" onclick="showSection('texts')">Bài khóa</button>
+    <button data-sec="grammar" onclick="showSection('grammar')">Ngữ pháp</button>
+    <button data-sec="translate" onclick="showSection('translate')">Dịch</button>
+    <button data-sec="classify" onclick="showSection('classify')">段 / 点</button>
+    <button data-sec="worksheet" onclick="showSection('worksheet')">Bài tập giấy</button>
+  </div></nav>
+
+  <div class="filters noPrint">
+    <button class="active" data-filter="all" onclick="setGroup('all')">Tất cả</button>
+    <button data-filter="date" onclick="setGroup('date')">Ngày tháng</button>
+    <button data-filter="week" onclick="setGroup('week')">Tuần / thứ</button>
+    <button data-filter="birthday" onclick="setGroup('birthday')">Sinh nhật</button>
+    <button data-filter="grammar" onclick="setGroup('grammar')">Mẫu câu</button>
+    <button data-filter="gift" onclick="setGroup('gift')">Quà / lượng từ</button>
+    <button data-filter="place" onclick="setGroup('place')">Địa điểm</button>
+  </div>
+
+  <section id="flash" class="section active">
+    <div class="flashwrap">
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="inner">
+          <div class="face front"><span class="tag corner" id="cardTag">Bài 8</span><span class="star" id="star"></span><div class="hanzi" id="cardHanzi">今天</div><div class="small">Bấm để lật thẻ</div></div>
+          <div class="face back"><span class="tag corner" id="cardTag2">Bài 8</span><div class="hanzi" id="backHanzi" style="font-size:78px;margin-bottom:10px">今天</div><div class="pinyin" id="cardPinyin">jīntiān</div><div class="meaning" id="cardMeaning">hôm nay</div><div class="note" id="cardNote">Ôn nhận mặt chữ trước, sau đó dùng trong câu.</div></div>
+        </div>
+      </div>
+      <aside class="sidebox">
+        <h3>Flashcard</h3>
+        <p class="small">Mục tiêu: học sinh nhìn chữ Hán là nhận ra được, chưa cần dịch câu dài ngay.</p>
+        <div class="actions"><button onclick="prevCard()">← Trước</button><button onclick="nextCard()">Tiếp →</button><button onclick="randomCard()">Random</button><button class="good" id="knownBtn" onclick="toggleKnown()">Đã nhớ</button></div>
+        <div class="actions"><button class="gold" onclick="unknownCard()">Ôn chữ chưa nhớ</button><button class="bad" onclick="resetKnown()">Xóa tiến độ</button></div>
+        <hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><div class="stat"><span>Thẻ hiện tại</span><strong id="cardNo">1/1</strong></div><p class="small">Phím tắt: <span class="kbd">Space</span> lật thẻ, <span class="kbd">←</span>/<span class="kbd">→</span> chuyển thẻ.</p>
+      </aside>
+    </div>
+    <div class="panel" style="margin-top:16px">
+      <h2>Lưới nhận mặt chữ</h2>
+      <div class="togglebox"><button onclick="toggleGridInfo()" id="gridToggle">Ẩn/hiện pinyin + nghĩa</button><span class="small">Bấm vào thẻ để đánh dấu đã nhớ.</span></div>
+      <input class="search" id="searchBox" placeholder="Tìm chữ Hán / pinyin / nghĩa..." oninput="renderGrid()">
+      <div class="vocabGrid" id="vocabGrid"></div>
+    </div>
+  </section>
+
+  <section id="drill" class="section"><div class="panel"><h2>Quiz nhận mặt chữ</h2><div class="question" id="drillQ">...</div><div class="options" id="drillOptions"></div><div class="feedback" id="drillFeedback"></div><div class="actions"><button class="primary" onclick="newDrill()">Câu tiếp theo</button><button onclick="changeDrillMode()">Đổi kiểu hỏi</button></div></div></section>
+
+  <section id="date" class="section"><div class="panel"><h2>Ôn ngày tháng năm</h2><div class="dateTool">
+    <div class="dateBox"><h3>1. Tạo ngày ngẫu nhiên</h3><p class="small">Nhìn ngày Việt/ số, nói sang tiếng Trung theo thứ tự: 年 → 月 → 号 → 星期.</p><div class="bigAnswer" id="datePrompt">...</div><div class="actions"><button class="primary" onclick="newDate()">Tạo ngày mới</button><button onclick="showDateAnswer()">Xem đáp án</button></div><div class="bigAnswer hidden" id="dateAnswer"></div></div>
+    <div class="dateBox"><h3>2. Trục thời gian 5 ngày</h3><p class="small">前天 → 昨天 → 今天 → 明天 → 后天</p><div class="bigAnswer">前天 · 昨天 · 今天 · 明天 · 后天</div><div class="vi">hôm kia · hôm qua · hôm nay · ngày mai · ngày mốt</div><hr style="border:0;border-top:1px solid var(--line);margin:14px 0"><p><strong>Mẫu:</strong> 今天六月十八号。明天六月十九号。</p></div>
+  </div></div></section>
+
+  <section id="texts" class="section"><div class="panel"><h2>Bài khóa Bài 8</h2><div class="textTabs" id="textTabs"></div><div class="actions noPrint"><button onclick="togglePinyin()">Ẩn/hiện pinyin</button><button onclick="toggleVietnamese()">Ẩn/hiện tiếng Việt</button></div><div id="textBox"></div><h3 style="margin-top:18px">Câu hỏi đọc hiểu</h3><div class="qa" id="qaBox"></div></div></section>
+
+  <section id="grammar" class="section"><div class="panel"><h2>Ngữ pháp trọng tâm</h2><div class="grammarGrid" id="grammarGrid"></div></div></section>
+
+  <section id="translate" class="section"><div class="panel"><h2>Dịch Việt → Hoa</h2><p class="small">Bấm “Xem đáp án” sau khi học sinh tự nói/viết trước.</p><div class="transBox" id="transBox"><span class="tag" id="transLevel">Cơ bản</span><div class="transQ" id="transQ">...</div><div class="transAns" id="transAns">...</div><div class="actions"><button class="primary" onclick="newTrans()">Câu khác</button><button onclick="showTrans()">Xem đáp án</button><button onclick="changeTransLevel()">Đổi mức</button></div></div></div></section>
+
+  <section id="classify" class="section"><div class="panel"><h2>时间段 hay 时间点?</h2><p class="small">Bấm từng ô: nếu là KHOẢNG thời gian chọn “段”, nếu là MỐC thời gian chọn “点”.</p><div class="actions"><button class="primary" onclick="setClassMode('段')">Chọn: 段</button><button class="gold" onclick="setClassMode('点')">Chọn: 点</button><button onclick="renderClassify()">Làm lại</button></div><p class="small">Đang chọn: <strong id="classMode">段</strong></p><div class="classifyGrid" id="classifyGrid"></div><div class="feedback" id="classFeedback"></div></div></section>
+
+  <section id="worksheet" class="section"><div class="panel"><h2>Bài tập giấy / in PDF</h2><div class="actions noPrint"><button class="primary" onclick="window.print()">In / lưu PDF</button><button onclick="renderWorksheet()">Tạo lại</button></div><div class="worksheet" id="worksheet"></div></div></section>
+</div>
+<script>
+const VOCAB=[
+ {g:"date",tag:"Ngày tháng",h:"年",p:"nián",m:"năm",n:"2026年 = năm 2026"},{g:"date",tag:"Ngày tháng",h:"月",p:"yuè",m:"tháng",n:"4月 = tháng 4"},{g:"date",tag:"Ngày tháng",h:"日",p:"rì",m:"ngày; văn viết",n:"2026年4月25日"},{g:"date",tag:"Ngày tháng",h:"号",p:"hào",m:"ngày; khẩu ngữ",n:"Khi nói thường dùng 号"},{g:"date",tag:"Ngày tháng",h:"今天",p:"jīntiān",m:"hôm nay",n:"今天几号？"},{g:"date",tag:"Ngày tháng",h:"昨天",p:"zuótiān",m:"hôm qua",n:"昨天几月几号？"},{g:"date",tag:"Ngày tháng",h:"明天",p:"míngtiān",m:"ngày mai",n:"明天你去哪儿？"},{g:"date",tag:"Ngày tháng",h:"前天",p:"qiántiān",m:"hôm kia",n:"前天 → 昨天 → 今天"},{g:"date",tag:"Ngày tháng",h:"后天",p:"hòutiān",m:"ngày mốt",n:"今天 → 明天 → 后天"},{g:"date",tag:"Ngày tháng",h:"每天",p:"měitiān",m:"mỗi ngày",n:"每天我都学汉语。"},
+ {g:"week",tag:"Tuần/thứ",h:"星期",p:"xīngqī",m:"tuần; thứ",n:"星期 + số"},{g:"week",tag:"Tuần/thứ",h:"星期一",p:"xīngqī yī",m:"thứ hai",n:""},{g:"week",tag:"Tuần/thứ",h:"星期二",p:"xīngqī èr",m:"thứ ba",n:""},{g:"week",tag:"Tuần/thứ",h:"星期三",p:"xīngqī sān",m:"thứ tư",n:""},{g:"week",tag:"Tuần/thứ",h:"星期四",p:"xīngqī sì",m:"thứ năm",n:""},{g:"week",tag:"Tuần/thứ",h:"星期五",p:"xīngqī wǔ",m:"thứ sáu",n:""},{g:"week",tag:"Tuần/thứ",h:"星期六",p:"xīngqī liù",m:"thứ bảy",n:""},{g:"week",tag:"Tuần/thứ",h:"星期日",p:"xīngqī rì",m:"chủ nhật",n:"Cũng có thể nói 星期天"},{g:"week",tag:"Tuần/thứ",h:"星期天",p:"xīngqī tiān",m:"chủ nhật",n:"Cũng có thể nói 星期日"},{g:"week",tag:"Tuần/thứ",h:"上个星期",p:"shàng ge xīngqī",m:"tuần trước",n:""},{g:"week",tag:"Tuần/thứ",h:"这个星期",p:"zhè ge xīngqī",m:"tuần này",n:""},{g:"week",tag:"Tuần/thứ",h:"下个星期",p:"xià ge xīngqī",m:"tuần sau",n:""},{g:"week",tag:"Tuần/thứ",h:"周末",p:"zhōumò",m:"cuối tuần",n:"周末你去哪儿？"},
+ {g:"birthday",tag:"Sinh nhật",h:"生日",p:"shēngrì",m:"sinh nhật",n:"我的生日是12月16号。"},{g:"birthday",tag:"Sinh nhật",h:"生日快乐",p:"shēngrì kuàilè",m:"sinh nhật vui vẻ",n:"祝你生日快乐！"},{g:"birthday",tag:"Sinh nhật",h:"出生",p:"chūshēng",m:"ra đời; sinh năm",n:"你哪年出生？"},{g:"birthday",tag:"Sinh nhật",h:"祝",p:"zhù",m:"chúc",n:"祝你生日快乐。"},{g:"birthday",tag:"Sinh nhật",h:"林娜",p:"Línnà",m:"Lina",n:"Nhân vật bài khóa"},{g:"birthday",tag:"Sinh nhật",h:"马丁",p:"Mǎdīng",m:"Martin",n:"Nhân vật bài khóa"},{g:"birthday",tag:"Sinh nhật",h:"崔浩",p:"Cuī Hào",m:"Thôi Hạo",n:"Nhân vật bài khóa"},
+ {g:"grammar",tag:"Mẫu câu",h:"对",p:"duì",m:"đúng",n:"对吗？ = đúng không?"},{g:"grammar",tag:"Mẫu câu",h:"对吗",p:"duì ma",m:"đúng không?",n:"今天是你的生日，对吗？"},{g:"grammar",tag:"Mẫu câu",h:"怎么样",p:"zěnmeyàng",m:"thế nào?",n:"我们请你吃饭，怎么样？"},{g:"grammar",tag:"Mẫu câu",h:"准备",p:"zhǔnbèi",m:"chuẩn bị; định",n:"我准备去银行。"},{g:"grammar",tag:"Mẫu câu",h:"以前",p:"yǐqián",m:"trước đây",n:"以前我不学汉语。"},{g:"grammar",tag:"Mẫu câu",h:"现在",p:"xiànzài",m:"bây giờ",n:"现在我学汉语。"},{g:"grammar",tag:"Mẫu câu",h:"以后",p:"yǐhòu",m:"sau này; sau khi",n:"下课以后，我回家。"},{g:"grammar",tag:"Mẫu câu",h:"一起",p:"yìqǐ",m:"cùng nhau",n:"我们一起吃饭。"},{g:"grammar",tag:"Mẫu câu",h:"请",p:"qǐng",m:"mời; xin",n:"请你吃饭。"},{g:"grammar",tag:"Mẫu câu",h:"给",p:"gěi",m:"cho",n:"我给妈妈买礼物。"},{g:"grammar",tag:"Mẫu câu",h:"送",p:"sòng",m:"tặng; đưa",n:"老师给你送礼物。"},
+ {g:"gift",tag:"Quà/lượng từ",h:"书",p:"shū",m:"sách",n:"一本书"},{g:"gift",tag:"Quà/lượng từ",h:"中文书",p:"Zhōngwén shū",m:"sách tiếng Trung",n:"一本中文书"},{g:"gift",tag:"Quà/lượng từ",h:"笔",p:"bǐ",m:"bút",n:"一支笔"},{g:"gift",tag:"Quà/lượng từ",h:"手机",p:"shǒujī",m:"điện thoại",n:"一台手机"},{g:"gift",tag:"Quà/lượng từ",h:"礼物",p:"lǐwù",m:"quà",n:"一份礼物"},{g:"gift",tag:"Quà/lượng từ",h:"本",p:"běn",m:"lượng từ cho sách/vở",n:"一本书"},{g:"gift",tag:"Quà/lượng từ",h:"支",p:"zhī",m:"lượng từ cho bút/vật dài",n:"一支笔"},{g:"gift",tag:"Quà/lượng từ",h:"份",p:"fèn",m:"phần; suất",n:"一份礼物"},{g:"gift",tag:"Quà/lượng từ",h:"时间",p:"shíjiān",m:"thời gian",n:"有时间 = rảnh"},{g:"gift",tag:"Quà/lượng từ",h:"有时间",p:"yǒu shíjiān",m:"rảnh; có thời gian",n:"周末你有时间吗？"},{g:"gift",tag:"Quà/lượng từ",h:"问题",p:"wèntí",m:"vấn đề",n:"有问题 / 没问题"},{g:"gift",tag:"Quà/lượng từ",h:"没问题",p:"méi wèntí",m:"không vấn đề gì",n:"有时间，没问题。"},
+ {g:"place",tag:"Địa điểm",h:"家",p:"jiā",m:"nhà",n:"我去我家。"},{g:"place",tag:"Địa điểm",h:"学校",p:"xuéxiào",m:"trường học",n:"我去学校。"},{g:"place",tag:"Địa điểm",h:"银行",p:"yínháng",m:"ngân hàng",n:"我去银行。"},{g:"place",tag:"Địa điểm",h:"书店",p:"shūdiàn",m:"nhà sách",n:"我去书店。"},{g:"place",tag:"Địa điểm",h:"图书馆",p:"túshūguǎn",m:"thư viện",n:"我去图书馆看书。"},{g:"place",tag:"Địa điểm",h:"咖啡店",p:"kāfēidiàn",m:"quán cà phê",n:"我去咖啡店。"},{g:"place",tag:"Địa điểm",h:"胡志明",p:"Húzhìmíng",m:"Hồ Chí Minh",n:"胡志明市"},{g:"place",tag:"Địa điểm",h:"河内",p:"Hénèi",m:"Hà Nội",n:""},
+ {g:"grammar",tag:"Âm đọc",h:"上课",p:"shàngkè",m:"vào học",n:""},{g:"grammar",tag:"Âm đọc",h:"下课",p:"xiàkè",m:"tan học",n:"下课以后，我回家。"},{g:"grammar",tag:"Âm đọc",h:"上班",p:"shàngbān",m:"đi làm",n:""},{g:"grammar",tag:"Âm đọc",h:"下班",p:"xiàbān",m:"tan làm",n:""},{g:"grammar",tag:"Âm đọc",h:"可乐",p:"kělè",m:"cola",n:"Luyện âm từ bài."},{g:"grammar",tag:"Âm đọc",h:"广播",p:"guǎngbō",m:"phát thanh",n:"Luyện âm từ bài."}
+];
+const GRAMMAR=[
+ {t:"Ngày tháng năm",p:"年 → 月 → 号/日",b:"Tiếng Trung nói từ lớn đến nhỏ: năm → tháng → ngày. Khẩu ngữ thường dùng 号, văn viết dùng 日.",e:["2026年4月25号。","今天九月二十八号。"]},
+ {t:"Hỏi ngày & thứ",p:"今天几月几号？星期几？",b:"几月 hỏi tháng, 几号 hỏi ngày, 星期几 hỏi thứ.",e:["今天2月18号，星期六。","昨天几月几号？"]},
+ {t:"Thứ trong tuần",p:"星期 + số；星期日/星期天",b:"星期一 là thứ 2, 星期二 là thứ 3... Chủ nhật có thể nói 星期日 hoặc 星期天.",e:["明天星期六。","十月十号是星期几？"]},
+ {t:"Trục thời gian",p:"前天 · 昨天 · 今天 · 明天 · 后天",b:"Dùng để nói hôm kia, hôm qua, hôm nay, ngày mai, ngày mốt.",e:["昨天六月十七号。","后天六月二十号。"]},
+ {t:"Tuần/tháng trước-này-sau",p:"上个 / 这个 / 下个 + 星期/月",b:"上个 = trước, 这个 = này, 下个 = sau.",e:["下个星期我回家。","这个星期我学汉语。"]},
+ {t:"时间段 vs 时间点",p:"三天 = 段；三号 = 点",b:"时间段 là khoảng bao lâu. 时间点 là mốc khi nào. 月 và 星期 khi là khoảng cần 个: 三个月, 一个星期.",e:["我在中国三个月了。","三月我去中国。"]},
+ {t:"以后",p:"时间/动作 + 以后，……",b:"以后 có nghĩa là sau này hoặc sau khi. Đặt sau mốc thời gian/hành động để nói sau khi làm gì.",e:["下课以后，我回家。","吃饭以后，我看书。"]},
+ {t:"……，对吗？",p:"Câu xác nhận",b:"Người hỏi đã có dự đoán và hỏi để xác nhận. Trả lời 对 hoặc 不对.",e:["今天是你的生日，对吗？","对，今天是我的生日。"]},
+ {t:"……，怎么样？",p:"Đề nghị / hỏi ý kiến",b:"Dùng để hỏi “thế nào?” hoặc đưa đề nghị.",e:["我们请你吃饭，怎么样？","周末去老师家，怎么样？"]},
+ {t:"量词 本 / 支 / 份",p:"一 + lượng từ + danh từ",b:"本 dùng cho sách/vở; 支 dùng cho bút/vật dài; 份 dùng cho quà, tài liệu, phần.",e:["一本中文书。","一支笔。","一份礼物。"]},
+ {t:"给 + ai + V",p:"S + 给 + AI + V + O",b:"Nghĩa là làm gì CHO ai.",e:["我给妈妈买礼物。","老师给我们送礼物。"]},
+ {t:"有时间 / 没问题",p:"有时间吗？— 没问题！",b:"有时间 là rảnh. 没问题 là không vấn đề gì / ok.",e:["周末你有时间吗？","有时间，没问题。"]}
+];
+const TEXTS=[
+ {title:"Bài khóa 1",lines:[
+  ["旁白","今天九月二十八日，星期二，是林娜19岁的生日。","Jīntiān jiǔ yuè èrshíbā rì, xīngqī èr, shì Línnà shíjiǔ suì de shēngrì.","Hôm nay là ngày 28 tháng 9, thứ ba, là sinh nhật 19 tuổi của Linna."],
+  ["旁白","下课以后，同学们准备一起请她吃饭。","Xiàkè yǐhòu, tóngxuémen zhǔnbèi yìqǐ qǐng tā chīfàn.","Sau khi tan học, các bạn chuẩn bị cùng mời cô ấy ăn cơm."]],qa:[["今天几月几号？","今天九月二十八号。"],["今天星期几？","星期二。"],["今天是谁的生日？","是林娜的生日。"],["下课以后，同学们准备做什么？","准备一起请她吃饭。"]]},
+ {title:"Bài khóa 2",lines:[
+  ["马丁","林娜，今天是你的生日，对吗？","Línnà, jīntiān shì nǐ de shēngrì, duì ma?","Linna, hôm nay là sinh nhật của bạn, đúng không?"],
+  ["林娜","我的生日？今天几号？","Wǒ de shēngrì? Jīntiān jǐ hào?","Sinh nhật của tôi? Hôm nay ngày mấy?"],
+  ["马丁","今天九月二十八号。","Jīntiān jiǔ yuè èrshíbā hào.","Hôm nay là ngày 28 tháng 9."],
+  ["林娜","对，对，今天是我的生日。","Duì, duì, jīntiān shì wǒ de shēngrì.","Đúng rồi, hôm nay là sinh nhật của tôi."],
+  ["马丁","我们请你吃饭，怎么样？","Wǒmen qǐng nǐ chīfàn, zěnmeyàng?","Chúng tôi mời bạn ăn cơm, thế nào?"],
+  ["林娜","太好了！谢谢你们！","Tài hǎo le! Xièxie nǐmen!","Tốt quá! Cảm ơn các bạn!"]],qa:[["今天几号？","今天九月二十八号。"],["今天是谁的生日？","是林娜的生日。"],["马丁请林娜做什么？","请她吃饭。"],["林娜高兴吗？","高兴。她说：太好了！"]]},
+ {title:"Bài khóa 3",lines:[
+  ["马丁","林娜，祝你生日快乐！这是我们的礼物。","Línnà, zhù nǐ shēngrì kuàilè! Zhè shì wǒmen de lǐwù.","Linna, chúc bạn sinh nhật vui vẻ! Đây là quà của chúng tôi."],
+  ["林娜","谢谢。是什么礼物？","Xièxie. Shì shénme lǐwù?","Cảm ơn. Là quà gì vậy?"],
+  ["马丁","一本中文书和一支笔。","Yì běn Zhōngwén shū hé yì zhī bǐ.","Một quyển sách tiếng Trung và một cây bút."],
+  ["崔浩","十月十号是我的生日，你们都去我家，怎么样？","Shí yuè shí hào shì wǒ de shēngrì, nǐmen dōu qù wǒ jiā, zěnmeyàng?","Ngày 10 tháng 10 là sinh nhật tôi, các bạn đều đến nhà tôi, thế nào?"],
+  ["马丁","好啊！十月十号是星期几？","Hǎo a! Shí yuè shí hào shì xīngqī jǐ?","Được đó! Ngày 10 tháng 10 là thứ mấy?"],
+  ["崔浩","星期日。","Xīngqī rì.","Chủ nhật."],
+  ["林娜","有时间，没问题。","Yǒu shíjiān, méi wèntí.","Có thời gian, không vấn đề gì."]],qa:[["马丁和林娜送什么礼物？","一本中文书和一支笔。"],["十月十号是谁的生日？","崔浩的生日。"],["十月十号是星期几？","星期日。"],["林娜有时间吗？","有时间，没问题。"]]}
+];
+const TRANS_BASIC=[
+ ["Tuần này chúng ta không học tiếng Trung, chúng ta học tiếng Anh.","这个星期我们不学汉语，我们学英语。"],
+ ["Thứ tư tuần sau tôi đi Trung Quốc.","下个星期三我去中国。"],
+ ["Thứ bảy tuần sau chúng tôi về nhà mẹ.","下个星期六我们回妈妈家。"],
+ ["Cuối tuần sau tôi về nhà.","下个周末我回家。"],
+ ["Tháng 3 năm ngoái tôi về trường thăm thầy cô giáo.","去年三月我回学校看老师。"],
+ ["Ngày 20/10 năm ngoái tôi về nhà.","去年十月二十号我回家。"],
+ ["Thứ ba ngày 12 tháng sau là sinh nhật của tôi.","下个月十二号，星期二，是我的生日。"],
+ ["Chủ nhật tuần sau là sinh nhật của bạn tôi.","下个星期天是我朋友的生日。"],
+ ["Tháng trước tôi gặp anh ấy.","上个月我见他。"],
+ ["Năm ngoái ngày 12/7, tôi bắt đầu học tiếng Trung.","去年七月十二号，我开始学汉语。"]
+];
+const TRANS_ADV=[
+ ["Chúng ta cùng nhau học tiếng Trung, xong cùng nhau đi chơi nhé?","我们一起学汉语，学完以后一起去玩，怎么样？"],
+ ["Tuần trước bạn đi đâu? Bạn đi với ai? Sao không rủ tôi đi cùng?","上个星期你去哪儿？你和谁一起去？为什么不请我一起去？"],
+ ["Một tháng có bao nhiêu ngày? Một năm có bao nhiêu ngày? Một năm có bao nhiêu tuần?","一个月有多少天？一年有多少天？一年有多少个星期？"],
+ ["Cuối tuần bạn có thời gian không? Chúng ta cùng nhau đi thăm cô giáo nhé?","周末你有时间吗？我们一起去看老师，怎么样？"],
+ ["Ngày 12 tháng 3 là sinh nhật tôi, các bạn đến nhà tôi chơi nhé?","三月十二号是我的生日，你们来我家玩，怎么样？"],
+ ["Tôi mua quà cho mẹ.","我给妈妈买礼物。"],
+ ["Cô tặng quà cho chúng tôi.","老师给我们送礼物。"],
+ ["Sau khi ăn cơm, tôi đọc sách.","吃饭以后，我看书。"],
+ ["Sau khi tan học, tôi đi ngân hàng.","下课以后，我去银行。"],
+ ["Một tuần sau, tôi về nhà thăm ba mẹ.","一个星期以后，我回家看爸爸妈妈。"]
+];
+const CLASSIFY=[
+ ["三天","段"],["五号","点"],["三个月","段"],["十月","点"],["2025年","点"],["两年","段"],["星期五","点"],["一个星期","段"],["星期日","点"],["六个月","段"],["十二号","点"],["三年","段"]
+];
+let group="all",idx=0,gridInfo=true,known=new Set(JSON.parse(localStorage.getItem("yuefei_b8_known")||"[]"));let drillMode=0,currentDrill=null;let currentText=0,showPin=true,showVi=true;let transLevel=0,currentTrans=null;let classMode="段";let dateCurrent=null;
+function pool(){return group==="all"?VOCAB:VOCAB.filter(x=>x.g===group)}function shuffle(a){return [...a].sort(()=>Math.random()-.5)}function pick(a){return a[Math.floor(Math.random()*a.length)]}function norm(s){return (s||"").toLowerCase().replace(/\s/g,"")}
+function showSection(id){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll("[data-sec]").forEach(b=>b.classList.toggle("active",b.dataset.sec===id));if(id==="drill")newDrill();if(id==="date")newDate();if(id==="texts")renderTexts();if(id==="grammar")renderGrammar();if(id==="translate")newTrans();if(id==="classify")renderClassify();if(id==="worksheet")renderWorksheet();}
+function setGroup(g){group=g;idx=0;document.querySelectorAll("[data-filter]").forEach(b=>b.classList.toggle("active",b.dataset.filter===g));renderCard();renderGrid();}
+function flipCard(){document.getElementById("flashcard").classList.toggle("flipped")}
+function renderCard(){let arr=pool();if(idx>=arr.length)idx=0;let c=arr[idx];document.getElementById("flashcard").classList.remove("flipped");document.getElementById("cardHanzi").textContent=c.h;document.getElementById("backHanzi").textContent=c.h;document.getElementById("cardPinyin").textContent=c.p;document.getElementById("cardMeaning").textContent=c.m;document.getElementById("cardNote").textContent=c.n||"";document.getElementById("cardTag").textContent=c.tag;document.getElementById("cardTag2").textContent=c.tag;document.getElementById("cardNo").textContent=(idx+1)+"/"+arr.length;document.getElementById("star").textContent=known.has(c.h)?"✓":"";document.getElementById("knownBtn").textContent=known.has(c.h)?"Bỏ đã nhớ":"Đã nhớ";updateStat();}
+function nextCard(){idx=(idx+1)%pool().length;renderCard()}function prevCard(){idx=(idx-1+pool().length)%pool().length;renderCard()}function randomCard(){idx=Math.floor(Math.random()*pool().length);renderCard()}function unknownCard(){let arr=pool(),u=arr.map((c,i)=>known.has(c.h)?-1:i).filter(i=>i>=0);if(!u.length){alert("Nhóm này đã nhớ hết rồi.");return}idx=pick(u);renderCard()}
+function toggleKnown(){let c=pool()[idx];known.has(c.h)?known.delete(c.h):known.add(c.h);localStorage.setItem("yuefei_b8_known",JSON.stringify([...known]));renderCard();renderGrid()}function resetKnown(){if(confirm("Xóa tiến độ đã nhớ?")){known.clear();localStorage.removeItem("yuefei_b8_known");renderCard();renderGrid()}}
+function updateStat(){let n=VOCAB.filter(x=>known.has(x.h)).length;document.getElementById("knownStat").textContent=n+"/"+VOCAB.length;document.getElementById("progressBar").style.width=Math.round(n/VOCAB.length*100)+"%"}
+function toggleGridInfo(){gridInfo=!gridInfo;renderGrid()}function renderGrid(){let q=norm(document.getElementById("searchBox")?.value||"");let arr=pool().filter(x=>norm(x.h+x.p+x.m+x.tag).includes(q));document.getElementById("vocabGrid").innerHTML=arr.map(x=>`<div class="vocabCard ${gridInfo?'':'vcHidden'} ${known.has(x.h)?'done':''}" onclick="known.has('${x.h}')?known.delete('${x.h}'):known.add('${x.h}');localStorage.setItem('yuefei_b8_known',JSON.stringify([...known]));renderGrid();updateStat();"><div class="tag">${x.tag}</div><div class="vcH">${x.h}</div><div class="vcP">${x.p}</div><div class="vcM">${x.m}</div></div>`).join("")}
+function changeDrillMode(){drillMode=(drillMode+1)%3;newDrill()}function newDrill(){let arr=pool();currentDrill=pick(arr);let prompt=drillMode===0?`Chọn chữ Hán đúng cho pinyin: ${currentDrill.p}`:drillMode===1?`Chọn chữ Hán đúng cho nghĩa: ${currentDrill.m}`:`Chọn nghĩa đúng của: ${currentDrill.h}`;document.getElementById("drillQ").textContent=prompt;let key=drillMode===2?"m":"h";let opts=shuffle([currentDrill,...shuffle(arr.filter(x=>x.h!==currentDrill.h)).slice(0,3)]);document.getElementById("drillOptions").innerHTML=opts.map(o=>`<button class="option ${key==='h'?'cn':''}" onclick="checkDrill(this,'${o.h}')">${key==='h'?o.h:o.m}</button>`).join("");document.getElementById("drillFeedback").className="feedback";document.getElementById("drillFeedback").textContent=""}
+function checkDrill(btn,h){let ok=h===currentDrill.h;document.querySelectorAll("#drillOptions .option").forEach(b=>{b.disabled=true;if((drillMode===2&&b.textContent===currentDrill.m)||(drillMode!==2&&b.textContent===currentDrill.h))b.classList.add("correct")});if(!ok)btn.classList.add("wrong");let f=document.getElementById("drillFeedback");f.className="feedback "+(ok?"good":"bad");f.textContent=ok?`Đúng: ${currentDrill.h} · ${currentDrill.p} · ${currentDrill.m}`:`Chưa đúng. Đáp án: ${currentDrill.h} · ${currentDrill.p} · ${currentDrill.m}`}
+const nums=["零","一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","二十一","二十二","二十三","二十四","二十五","二十六","二十七","二十八","二十九","三十","三十一"];const weeks=["星期一","星期二","星期三","星期四","星期五","星期六","星期日"];
+function newDate(){let y=2019+Math.floor(Math.random()*10),m=1+Math.floor(Math.random()*12),d=1+Math.floor(Math.random()*28),w=pick(weeks);dateCurrent={y,m,d,w};document.getElementById("datePrompt").textContent=`${y}/${String(m).padStart(2,'0')}/${String(d).padStart(2,'0')} · ${w.replace('星期','Thứ/星期 ')}`;document.getElementById("dateAnswer").classList.add("hidden")}
+function showDateAnswer(){let c=dateCurrent;if(!c)newDate();c=dateCurrent;document.getElementById("dateAnswer").textContent=`${String(c.y).split('').map(n=>nums[+n]).join('')}年${nums[c.m]}月${nums[c.d]}号，${c.w}。`;document.getElementById("dateAnswer").classList.remove("hidden")}
+function renderGrammar(){document.getElementById("grammarGrid").innerHTML=GRAMMAR.map(g=>`<div class="grammarCard"><h3>${g.t}</h3><div class="pattern">${g.p}</div><p>${g.b}</p>${g.e.map(e=>`<div class="example">${e}</div>`).join('')}</div>`).join("")}
+function renderTexts(){document.getElementById("textTabs").innerHTML=TEXTS.map((t,i)=>`<button class="${i===currentText?'active':''}" onclick="currentText=${i};renderTexts();">${t.title}</button>`).join("");let t=TEXTS[currentText];document.getElementById("textBox").innerHTML=`<div class="dialogue">${t.lines.map(l=>`<div class="line"><div class="cnline"><span class="speaker">${l[0]}</span>${l[1]}</div><div class="pin ${showPin?'':'hidden'}">${l[2]}</div><div class="vi ${showVi?'':'hidden'}">${l[3]}</div></div>`).join("")}</div>`;document.getElementById("qaBox").innerHTML=t.qa.map(q=>`<div class="qaItem" onclick="this.classList.toggle('open')"><strong>Q: ${q[0]}</strong><div class="answer">A: ${q[1]}</div></div>`).join("")}
+function togglePinyin(){showPin=!showPin;renderTexts()}function toggleVietnamese(){showVi=!showVi;renderTexts()}
+function newTrans(){let arr=transLevel===0?TRANS_BASIC:TRANS_ADV;currentTrans=pick(arr);let box=document.getElementById("transBox");box.classList.remove("show");document.getElementById("transLevel").textContent=transLevel===0?"Cơ bản":"Nâng cao";document.getElementById("transQ").textContent=currentTrans[0];document.getElementById("transAns").textContent=currentTrans[1]}function showTrans(){document.getElementById("transBox").classList.add("show")}function changeTransLevel(){transLevel=(transLevel+1)%2;newTrans()}
+function setClassMode(m){classMode=m;document.getElementById("classMode").textContent=m}function renderClassify(){document.getElementById("classifyGrid").innerHTML=shuffle(CLASSIFY).map(x=>`<div class="classItem" onclick="checkClass(this,'${x[1]}')">${x[0]}</div>`).join("");document.getElementById("classFeedback").textContent=""}function checkClass(el,ans){let ok=ans===classMode;el.classList.add(ok?"right":"wrong");document.getElementById("classFeedback").className="feedback "+(ok?"good":"bad");document.getElementById("classFeedback").textContent=ok?"Đúng!":"Chưa đúng. Đáp án là "+ans;}
+function renderWorksheet(){let v=shuffle(VOCAB).slice(0,12),tr=shuffle(TRANS_BASIC).slice(0,6),cl=shuffle(CLASSIFY).slice(0,8);document.getElementById("worksheet").innerHTML=`<div class="task"><h3>1. Nhận mặt chữ: viết pinyin + nghĩa</h3>${v.map((x,i)=>`<p>${i+1}. <strong style="font-size:24px">${x.h}</strong> : __________________ / __________________</p>`).join("")}</div><div class="task"><h3>2. Điền từ</h3><p>1. 今天____月____号？</p><p>2. 十月十号是星期____？</p><p>3. 下课____，我回家。</p><p>4. 我给妈妈买____。</p><p>5. 一本中文____和一支____。</p></div><div class="task"><h3>3. Dịch sang tiếng Trung</h3>${tr.map((x,i)=>`<p>${i+1}. ${x[0]}<br>______________________________________________</p>`).join("")}</div><div class="task"><h3>4. 时间段 / 时间点</h3>${cl.map((x,i)=>`<p>${i+1}. ${x[0]} : 段 / 点</p>`).join("")}</div><details class="task"><summary><strong>Đáp án gợi ý</strong></summary><p>${tr.map((x,i)=>`${i+1}. ${x[1]}`).join("<br>")}</p><p>Điền từ gợi ý: 几/几, 几, 以后, 礼物, 书/笔</p><p>${cl.map((x,i)=>`${i+1}. ${x[0]} = ${x[1]}`).join("<br>")}</p></details>`}
+document.addEventListener("keydown",e=>{if(!document.getElementById("flash").classList.contains("active"))return;if(e.code==="Space"){e.preventDefault();flipCard()}if(e.key==="ArrowRight")nextCard();if(e.key==="ArrowLeft")prevCard()});
+renderCard();renderGrid();renderGrammar();renderTexts();newTrans();renderClassify();renderWorksheet();newDate();
+</script>
+</body>
+</html>
