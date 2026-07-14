@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ôn tập tiếng Trung cô Linh - Bài 7: Ở đâu?</title>
+<style>
+  :root {
+    --primary:#1a6b3c;--primary-light:#27ae60;--primary-pale:#eafaf1;
+    --secondary:#2980b9;--secondary-pale:#ebf5fb;
+    --success:#27ae60;--success-pale:#eafaf1;
+    --danger:#e74c3c;--danger-pale:#fdecea;
+    --neutral:#2c3e50;--neutral-light:#7f8c8d;
+    --bg:#f0f4f2;--white:#ffffff;--border:#d5e8d4;
+    --shadow:0 4px 16px rgba(0,0,0,0.10);--radius:14px;--radius-sm:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--neutral);min-height:100vh;}
+
+  header{background:linear-gradient(135deg,#1a6b3c 0%,#0d4a28 100%);color:#fff;padding:24px 20px 16px;text-align:center;}
+  header h1{font-size:1.5rem;font-weight:800;margin-bottom:4px;}
+  header p{font-size:0.93rem;opacity:0.85;}
+
+  #score-bar{background:var(--white);border-bottom:2px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
+  #score-bar span{font-size:0.95rem;font-weight:600;color:var(--primary);}
+  #score-bar button{background:var(--primary);color:#fff;border:none;border-radius:var(--radius-sm);padding:6px 16px;font-size:0.88rem;cursor:pointer;font-weight:600;}
+  #score-bar button:hover{background:var(--primary-light);}
+
+  #section-nav{display:flex;overflow-x:auto;gap:6px;padding:14px 16px 6px;background:var(--white);border-bottom:1px solid var(--border);}
+  .nav-btn{flex-shrink:0;background:var(--bg);border:2px solid var(--border);border-radius:20px;padding:6px 14px;font-size:0.82rem;font-weight:600;cursor:pointer;color:var(--neutral);transition:all 0.2s;}
+  .nav-btn.active,.nav-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+  .section{display:none;padding:20px 16px 40px;max-width:760px;margin:0 auto;}
+  .section.active{display:block;}
+  .section-title{font-size:1.2rem;font-weight:800;color:var(--primary);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+  .section-desc{font-size:0.87rem;color:var(--neutral-light);margin-bottom:18px;}
+
+  .card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:18px;}
+
+  /* Flashcard */
+  #flashcard-wrap{perspective:1200px;width:100%;max-width:420px;margin:0 auto 20px;}
+  .flip-card{width:100%;height:220px;position:relative;transform-style:preserve-3d;transition:transform 0.55s ease;cursor:pointer;}
+  .flip-card.flipped{transform:rotateY(180deg);}
+  .flip-front,.flip-back{position:absolute;inset:0;border-radius:var(--radius);backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;box-shadow:var(--shadow);}
+  .flip-front{background:linear-gradient(135deg,#1a6b3c 0%,#0d4a28 100%);color:#fff;}
+  .flip-back{background:linear-gradient(135deg,#1a5276 0%,#154360 100%);color:#fff;transform:rotateY(180deg);}
+  .flip-hanzi{font-size:2.6rem;font-weight:800;letter-spacing:4px;}
+  .flip-hint{font-size:0.8rem;margin-top:12px;opacity:0.7;}
+  .flip-pinyin{font-size:1.25rem;font-weight:700;margin-bottom:6px;}
+  .flip-meaning{font-size:1.05rem;margin-bottom:8px;}
+  .flip-example{font-size:0.84rem;opacity:0.82;font-style:italic;}
+  .card-counter{text-align:center;font-size:0.88rem;color:var(--neutral-light);margin-bottom:10px;}
+  .fc-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+
+  .btn{border:none;border-radius:var(--radius-sm);padding:9px 20px;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.18s;}
+  .btn-primary{background:var(--primary);color:#fff;}
+  .btn-primary:hover{background:var(--primary-light);}
+  .btn-secondary{background:var(--secondary);color:#fff;}
+  .btn-secondary:hover{background:#3498db;}
+  .btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary);}
+  .btn-outline:hover{background:var(--primary-pale);}
+  .btn-sm{padding:6px 13px;font-size:0.82rem;}
+
+  .exercise-item{background:var(--bg);border-radius:var(--radius-sm);padding:16px;margin-bottom:14px;border-left:4px solid var(--primary);}
+  .exercise-item.correct{border-left-color:var(--success);background:var(--success-pale);}
+  .exercise-item.wrong{border-left-color:var(--danger);background:var(--danger-pale);}
+  .question-text{font-size:0.97rem;margin-bottom:10px;font-weight:600;}
+  .question-chinese{font-size:1.25rem;color:var(--primary);font-weight:700;margin-bottom:4px;}
+  .question-hint{font-size:0.82rem;color:var(--neutral-light);margin-bottom:8px;}
+  .answer-input{width:100%;border:2px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;font-size:0.95rem;outline:none;transition:border-color 0.2s;}
+  .answer-input:focus{border-color:var(--primary);}
+  .answer-input.correct-input{border-color:var(--success);background:var(--success-pale);}
+  .answer-input.wrong-input{border-color:var(--danger);background:var(--danger-pale);}
+  .feedback{margin-top:8px;font-size:0.88rem;font-weight:600;min-height:22px;}
+  .feedback.correct{color:var(--success);}
+  .feedback.wrong{color:var(--danger);}
+  .answer-reveal{margin-top:6px;font-size:0.87rem;color:#2980b9;display:none;}
+  .item-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+
+  .mcq-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+  @media(max-width:480px){.mcq-options{grid-template-columns:1fr;}}
+  .mcq-opt{background:var(--white);border:2px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:0.9rem;cursor:pointer;font-weight:500;transition:all 0.18s;text-align:left;}
+  .mcq-opt:hover:not([disabled]){border-color:var(--primary);background:var(--primary-pale);}
+  .mcq-opt.selected-correct{border-color:var(--success);background:var(--success-pale);color:var(--success);font-weight:700;}
+  .mcq-opt.selected-wrong{border-color:var(--danger);background:var(--danger-pale);color:var(--danger);}
+
+  .sort-tokens{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  .token{background:var(--primary);color:#fff;border-radius:20px;padding:6px 14px;font-size:1rem;cursor:pointer;font-weight:600;user-select:none;transition:transform 0.15s,opacity 0.15s;}
+  .token:hover{transform:scale(1.07);opacity:0.85;}
+  .token.used{opacity:0.3;pointer-events:none;}
+  .sort-answer-box{min-height:46px;background:#f0f4f8;border:2px dashed var(--border);border-radius:var(--radius-sm);padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;}
+  .sort-placed{background:var(--secondary);color:#fff;border-radius:20px;padding:5px 12px;font-size:0.95rem;cursor:pointer;font-weight:600;}
+  .sort-placed:hover{background:#3498db;}
+
+  #summary-section .big-score{font-size:3.5rem;font-weight:900;color:var(--primary);text-align:center;margin:20px 0 8px;}
+  #summary-section .score-label{text-align:center;font-size:1rem;color:var(--neutral-light);margin-bottom:20px;}
+  .section-score-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:0.93rem;}
+  .section-score-row:last-child{border-bottom:none;}
+  .score-badge{background:var(--primary);color:#fff;border-radius:12px;padding:3px 12px;font-weight:700;font-size:0.85rem;}
+  .congrats-text{text-align:center;font-size:1.1rem;font-weight:700;margin:16px 0;}
+
+  /* compass box */
+  .compass-box{display:inline-flex;flex-direction:column;align-items:center;background:#fff3cd;border:2px solid #f0c040;border-radius:10px;padding:12px 20px;margin:10px 0;font-size:0.9rem;font-weight:600;gap:4px;}
+  .compass-row{display:flex;gap:16px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏫 Ôn tập tiếng Trung cô Linh</h1>
+  <p>Bài 7: Trung Quốc Ngân hàng ở đâu? (中国银行在哪儿？) — Vị trí, phương hướng, địa điểm</p>
+</header>
+
+<div id="score-bar">
+  <span id="score-display">✅ Đúng: 0 &nbsp;|&nbsp; ❌ Sai: 0 &nbsp;|&nbsp; 📝 Đã làm: 0</span>
+  <button onclick="resetAll()">🔄 Làm lại từ đầu</button>
+</div>
+
+<div id="section-nav">
+  <button class="nav-btn active" onclick="showSection('flashcards',this)">🃏 Thẻ từ</button>
+  <button class="nav-btn" onclick="showSection('viet-trung',this)">📝 Việt→Trung</button>
+  <button class="nav-btn" onclick="showSection('dich-cau-vt',this)">💬 Dịch câu V→T</button>
+  <button class="nav-btn" onclick="showSection('dich-cau-tv',this)">🔄 Dịch câu T→V</button>
+  <button class="nav-btn" onclick="showSection('dien-cho-trong',this)">🔲 Điền trống</button>
+  <button class="nav-btn" onclick="showSection('trac-nghiem',this)">☑️ Trắc nghiệm</button>
+  <button class="nav-btn" onclick="showSection('sap-xep',this)">🔀 Sắp xếp câu</button>
+  <button class="nav-btn" onclick="showSection('summary',this)">🏆 Tổng kết</button>
+</div>
+
+<!-- A. THẺ TỪ VỰNG -->
+<div class="section active" id="flashcards">
+  <div class="section-title">🃏 Thẻ lật từ vựng</div>
+  <p class="section-desc">Nhấn vào thẻ hoặc nút "Lật thẻ" để xem pinyin, nghĩa và ví dụ.</p>
+  <div class="card-counter"><span id="fc-index">1</span> / <span id="fc-total"></span></div>
+  <div id="flashcard-wrap">
+    <div class="flip-card" id="flip-card" onclick="flipCard()">
+      <div class="flip-front">
+        <div class="flip-hanzi" id="fc-hanzi">在</div>
+        <div class="flip-hint">👆 Nhấn để lật</div>
+      </div>
+      <div class="flip-back">
+        <div class="flip-pinyin" id="fc-pinyin"></div>
+        <div class="flip-meaning" id="fc-meaning"></div>
+        <div class="flip-example" id="fc-example"></div>
+      </div>
+    </div>
+  </div>
+  <div class="fc-controls">
+    <button class="btn btn-outline" onclick="flipCard()">↩️ Lật thẻ</button>
+    <button class="btn btn-primary" onclick="prevCard()">◀ Trước</button>
+    <button class="btn btn-primary" onclick="nextCard()">Tiếp theo ▶</button>
+  </div>
+  <div class="card" style="margin-top:20px;">
+    <div class="section-title" style="font-size:1rem;">🧭 Ôn nhanh: Từ phương hướng & vị trí</div>
+    <div class="compass-box">
+      <div>北 (běi) – Bắc</div>
+      <div class="compass-row"><span>西 (xī) – Tây</span><span style="margin:0 8px;">⬜</span><span>东 (dōng) – Đông</span></div>
+      <div>南 (nán) – Nam</div>
+    </div>
+    <div style="margin-top:10px;font-size:0.88rem;line-height:1.9;color:#34495e;">
+      <strong>Vị trí:</strong> 上 shàng (trên) · 下 xià (dưới) · 左 zuǒ (trái) · 右 yòu (phải)<br>
+      前 qián (trước) · 后 hòu (sau) · 里 lǐ (trong) · 外 wài (ngoài)<br>
+      旁边 pángbiān (bên cạnh) · 对面 duìmiàn (đối diện) · 中间 zhōngjiān (chính giữa)
+    </div>
+  </div>
+</div>
+
+<!-- B. VIỆT → TRUNG -->
+<div class="section" id="viet-trung">
+  <div class="section-title">📝 Dịch từ Việt → Trung</div>
+  <p class="section-desc">Nhìn nghĩa tiếng Việt, nhập chữ Hán tương ứng.</p>
+  <div id="viet-trung-list"></div>
+</div>
+
+<!-- C. DỊCH CÂU V→T -->
+<div class="section" id="dich-cau-vt">
+  <div class="section-title">💬 Dịch câu Việt → Trung</div>
+  <p class="section-desc">Dịch câu tiếng Việt sang tiếng Trung theo mẫu câu trong bài.</p>
+  <div id="dich-cau-vt-list"></div>
+</div>
+
+<!-- D. DỊCH CÂU T→V -->
+<div class="section" id="dich-cau-tv">
+  <div class="section-title">🔄 Dịch câu Trung → Việt</div>
+  <p class="section-desc">Đọc câu tiếng Trung, nhập nghĩa tiếng Việt rồi so sánh với đáp án mẫu.</p>
+  <div id="dich-cau-tv-list"></div>
+</div>
+
+<!-- E. ĐIỀN TRỐNG -->
+<div class="section" id="dien-cho-trong">
+  <div class="section-title">🔲 Điền vào chỗ trống</div>
+  <p class="section-desc">Điền từ còn thiếu vào câu tiếng Trung.</p>
+  <div id="dien-cho-trong-list"></div>
+</div>
+
+<!-- F. TRẮC NGHIỆM -->
+<div class="section" id="trac-nghiem">
+  <div class="section-title">☑️ Chọn đáp án đúng</div>
+  <p class="section-desc">Chọn đáp án đúng trong 4 lựa chọn.</p>
+  <div id="trac-nghiem-list"></div>
+</div>
+
+<!-- G. SẮP XẾP CÂU -->
+<div class="section" id="sap-xep">
+  <div class="section-title">🔀 Sắp xếp câu</div>
+  <p class="section-desc">Nhấn vào từng từ theo đúng thứ tự để tạo thành câu hoàn chỉnh.</p>
+  <div id="sap-xep-list"></div>
+</div>
+
+<!-- H. TỔNG KẾT -->
+<div class="section" id="summary" id="summary-section">
+  <div class="section-title">🏆 Tổng kết điểm</div>
+  <div class="card">
+    <div class="big-score" id="final-score">0/0</div>
+    <div class="score-label" id="final-label">Hãy làm các bài tập để xem điểm tổng kết!</div>
+    <div class="congrats-text" id="congrats-text"></div>
+    <div id="section-scores"></div>
+    <div style="text-align:center;margin-top:20px;">
+      <button class="btn btn-primary" onclick="resetAll()">🔄 Làm lại từ đầu</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════
+
+const VOCAB = [
+  // Địa điểm
+  {hanzi:"在", pinyin:"zài", meaning:"ở, đang ở (tại)", example:"中国银行在哪儿？— Ngân hàng Trung Quốc ở đâu?"},
+  {hanzi:"哪儿", pinyin:"nǎr", meaning:"ở đâu", example:"你去哪儿？— Bạn đi đâu vậy?"},
+  {hanzi:"这儿", pinyin:"zhèr", meaning:"ở đây", example:"我们在这儿。— Chúng tôi ở đây."},
+  {hanzi:"那儿", pinyin:"nàr", meaning:"ở đó, ở kia", example:"那儿有一个超市。— Ở đó có một siêu thị."},
+  {hanzi:"教学楼", pinyin:"jiàoxuélóu", meaning:"toà nhà giảng đường", example:"图书馆在教学楼北边。— Thư viện ở phía bắc toà giảng đường."},
+  {hanzi:"图书馆", pinyin:"túshūguǎn", meaning:"thư viện", example:"图书馆在哪儿？— Thư viện ở đâu?"},
+  {hanzi:"体育馆", pinyin:"tǐyùguǎn", meaning:"nhà thi đấu thể thao", example:"体育馆在教学楼西边。— Nhà thi đấu ở phía tây toà giảng đường."},
+  {hanzi:"运动场", pinyin:"yùndòngchǎng", meaning:"sân vận động", example:"运动场在教学楼西边。— Sân vận động ở phía tây toà giảng đường."},
+  {hanzi:"饭馆", pinyin:"fànguǎn", meaning:"quán cơm, nhà hàng", example:"饭馆在留学生楼西边。— Quán cơm ở phía tây ký túc xá lưu học sinh."},
+  {hanzi:"超市", pinyin:"chāoshì", meaning:"siêu thị", example:"超市在图书馆东边。— Siêu thị ở phía đông thư viện."},
+  {hanzi:"银行", pinyin:"yínháng", meaning:"ngân hàng", example:"中国银行在超市东边。— Ngân hàng Trung Quốc ở phía đông siêu thị."},
+  {hanzi:"邮局", pinyin:"yóujú", meaning:"bưu điện", example:"邮局在哪儿？— Bưu điện ở đâu?"},
+  {hanzi:"宿舍", pinyin:"sùshè", meaning:"ký túc xá", example:"宿舍在运动场南边。— Ký túc xá ở phía nam sân vận động."},
+  {hanzi:"卫生间", pinyin:"wèishēngjiān", meaning:"nhà vệ sinh, toilet", example:"哪儿有卫生间？— Ở đâu có nhà vệ sinh?"},
+  {hanzi:"学校", pinyin:"xuéxiào", meaning:"trường học", example:"学校在饭馆南边。— Trường học ở phía nam quán cơm."},
+  {hanzi:"商店", pinyin:"shāngdiàn", meaning:"cửa hàng", example:"商店在什么地方？— Cửa hàng ở chỗ nào vậy?"},
+  {hanzi:"咖啡店", pinyin:"kāfēidiàn", meaning:"quán cà phê", example:"咖啡店在哪儿？— Quán cà phê ở đâu?"},
+  {hanzi:"书店", pinyin:"shūdiàn", meaning:"hiệu sách", example:"书店在图书馆旁边。— Hiệu sách ở bên cạnh thư viện."},
+  {hanzi:"医院", pinyin:"yīyuàn", meaning:"bệnh viện", example:"我们一起去医院吧。— Chúng ta cùng đi bệnh viện nhé."},
+  {hanzi:"公司", pinyin:"gōngsī", meaning:"công ty", example:"我在公司工作。— Tôi làm việc ở công ty."},
+  // Phương hướng / vị trí
+  {hanzi:"东边", pinyin:"dōngbiān", meaning:"phía đông", example:"银行在超市东边。— Ngân hàng ở phía đông siêu thị."},
+  {hanzi:"西边", pinyin:"xībiān", meaning:"phía tây", example:"运动场在教学楼西边。— Sân vận động ở phía tây toà giảng đường."},
+  {hanzi:"南边", pinyin:"nánbiān", meaning:"phía nam", example:"留学生楼在运动场南边。— Ký túc xá ở phía nam sân vận động."},
+  {hanzi:"北边", pinyin:"běibiān", meaning:"phía bắc", example:"图书馆在教学楼北边。— Thư viện ở phía bắc toà giảng đường."},
+  {hanzi:"旁边", pinyin:"pángbiān", meaning:"bên cạnh", example:"书包旁边有什么？— Bên cạnh cặp có gì?"},
+  {hanzi:"对面", pinyin:"duìmiàn", meaning:"đối diện", example:"银行在商店对面。— Ngân hàng đối diện với cửa hàng."},
+  {hanzi:"中间", pinyin:"zhōngjiān", meaning:"chính giữa", example:"他在中间。— Anh ấy ở chính giữa."},
+  {hanzi:"前边", pinyin:"qiánbiān", meaning:"phía trước", example:"卫生间在前边。— Nhà vệ sinh ở phía trước."},
+  {hanzi:"后边", pinyin:"hòubiān", meaning:"phía sau", example:"超市在后边。— Siêu thị ở phía sau."},
+  {hanzi:"里边", pinyin:"lǐbiān", meaning:"bên trong, ở trong", example:"商店里边有卫生间。— Bên trong cửa hàng có nhà vệ sinh."},
+  {hanzi:"上面", pinyin:"shàngmiàn", meaning:"phía trên, mặt trên", example:"桌子上面有什么？— Trên bàn có gì?"},
+  // Động từ / cấu trúc quan trọng
+  {hanzi:"知道", pinyin:"zhīdào", meaning:"biết (thông tin)", example:"你知道银行在哪儿吗？— Bạn có biết ngân hàng ở đâu không?"},
+  {hanzi:"去", pinyin:"qù", meaning:"đi (đến nơi nào)", example:"你去哪儿？— Bạn đi đâu?"},
+  {hanzi:"跟…一起", pinyin:"gēn…yīqǐ", meaning:"cùng (với ai đó)", example:"我跟你一起去吧。— Tôi đi cùng bạn nhé."},
+  {hanzi:"还有", pinyin:"hái yǒu", meaning:"còn có, ngoài ra còn", example:"还有一个超市。— Còn có một siêu thị nữa."},
+  {hanzi:"对不起", pinyin:"duìbuqǐ", meaning:"xin lỗi", example:"对不起，我不知道。— Xin lỗi, tôi không biết."},
+  {hanzi:"没关系", pinyin:"méiguānxi", meaning:"không sao", example:"没关系，谢谢！— Không sao, cảm ơn!"},
+  {hanzi:"太…了", pinyin:"tài…le", meaning:"quá… (cảm thán)", example:"太好了！— Tốt quá!"},
+  {hanzi:"就是", pinyin:"jiùshì", meaning:"chính là, đúng là", example:"那儿就是。— Đúng là ở đó."},
+  {hanzi:"什么地方", pinyin:"shénme dìfang", meaning:"ở chỗ nào, địa điểm nào", example:"商店在什么地方？— Cửa hàng ở chỗ nào?"},
+];
+
+const VIET_TRUNG = [
+  {viet:"ngân hàng", answer:"银行", pinyin:"yínháng"},
+  {viet:"thư viện", answer:"图书馆", pinyin:"túshūguǎn"},
+  {viet:"siêu thị", answer:"超市", pinyin:"chāoshì"},
+  {viet:"nhà vệ sinh", answer:"卫生间", pinyin:"wèishēngjiān"},
+  {viet:"ký túc xá", answer:"宿舍", pinyin:"sùshè"},
+  {viet:"bưu điện", answer:"邮局", pinyin:"yóujú"},
+  {viet:"sân vận động", answer:"运动场", pinyin:"yùndòngchǎng"},
+  {viet:"nhà thi đấu thể thao", answer:"体育馆", pinyin:"tǐyùguǎn"},
+  {viet:"quán cơm", answer:"饭馆", pinyin:"fànguǎn"},
+  {viet:"phía đông", answer:"东边", pinyin:"dōngbiān"},
+  {viet:"phía bắc", answer:"北边", pinyin:"běibiān"},
+  {viet:"phía nam", answer:"南边", pinyin:"nánbiān"},
+  {viet:"phía tây", answer:"西边", pinyin:"xībiān"},
+  {viet:"bên cạnh", answer:"旁边", pinyin:"pángbiān"},
+  {viet:"đối diện", answer:"对面", pinyin:"duìmiàn"},
+  {viet:"bên trong", answer:"里边", pinyin:"lǐbiān"},
+  {viet:"xin lỗi", answer:"对不起", pinyin:"duìbuqǐ"},
+  {viet:"không sao", answer:"没关系", pinyin:"méiguānxi"},
+  {viet:"biết (thông tin)", answer:"知道", pinyin:"zhīdào"},
+  {viet:"ở đâu", answer:"哪儿", pinyin:"nǎr"},
+];
+
+const DICH_CAU_VT = [
+  {viet:"Ngân hàng Trung Quốc ở đâu?", answer:"中国银行在哪儿？", pinyin:"Zhōngguó yínháng zài nǎr?"},
+  {viet:"Thư viện ở phía bắc toà giảng đường.", answer:"图书馆在教学楼北边。", pinyin:"Túshūguǎn zài jiàoxuélóu běibiān."},
+  {viet:"Tôi đi cùng bạn nhé.", answer:"我跟你一起去吧。", pinyin:"Wǒ gēn nǐ yīqǐ qù ba."},
+  {viet:"Xin hỏi, ở đâu có nhà vệ sinh?", answer:"请问，哪儿有卫生间？", pinyin:"Qǐngwèn, nǎr yǒu wèishēngjiān?"},
+  {viet:"Xin lỗi, tôi không biết.", answer:"对不起，我不知道。", pinyin:"Duìbuqǐ, wǒ bù zhīdào."},
+  {viet:"Cửa hàng ở chỗ nào vậy?", answer:"商店在什么地方？", pinyin:"Shāngdiàn zài shénme dìfang?"},
+  {viet:"Buổi tối tôi đi đến nhà cô giáo, bạn đi không?", answer:"晚上我去老师家，你去吗？", pinyin:"Wǎnshàng wǒ qù lǎoshī jiā, nǐ qù ma?"},
+  {viet:"Phía tây ký túc xá lưu học sinh có một quán cơm, còn có một siêu thị.", answer:"留学生楼西边有一个饭馆，还有一个超市。", pinyin:"Liúxuéshēng lóu xībiān yǒu yí ge fànguǎn, hái yǒu yí ge chāoshì."},
+  {viet:"Tôi biết anh ấy làm việc ở siêu thị.", answer:"我知道他在超市工作。", pinyin:"Wǒ zhīdào tā zài chāoshì gōngzuò."},
+  {viet:"Bạn có biết quyển sách này là của ai không?", answer:"你知道这本书是谁的吗？", pinyin:"Nǐ zhīdào zhè běn shū shì shéi de ma?"},
+];
+
+const DICH_CAU_TV = [
+  {chinese:"中国银行在超市东边。", pinyin:"Zhōngguó yínháng zài chāoshì dōngbiān.", viet:"Ngân hàng Trung Quốc ở phía đông siêu thị."},
+  {chinese:"我们在这儿，图书馆在教学楼北边。", pinyin:"Wǒmen zài zhèr, túshūguǎn zài jiàoxuélóu běibiān.", viet:"Chúng tôi ở đây, thư viện ở phía bắc toà giảng đường."},
+  {chinese:"商店里边有卫生间。", pinyin:"Shāngdiàn lǐbiān yǒu wèishēngjiān.", viet:"Bên trong cửa hàng có nhà vệ sinh."},
+  {chinese:"教学楼西边有运动场和体育馆。", pinyin:"Jiàoxuélóu xībiān yǒu yùndòngchǎng hé tǐyùguǎn.", viet:"Phía tây toà giảng đường có sân vận động và nhà thi đấu."},
+  {chinese:"你知道吗？知道，在超市东边。", pinyin:"Nǐ zhīdào ma? Zhīdào, zài chāoshì dōngbiān.", viet:"Bạn có biết không? Biết, ở phía đông siêu thị."},
+  {chinese:"对不起，我不知道。没关系。", pinyin:"Duìbuqǐ, wǒ bù zhīdào. Méiguānxi.", viet:"Xin lỗi, tôi không biết. Không sao."},
+  {chinese:"早上我去超市买水果。", pinyin:"Zǎoshang wǒ qù chāoshì mǎi shuǐguǒ.", viet:"Buổi sáng tôi đến siêu thị mua trái cây."},
+  {chinese:"桌子上面有一个电脑和一本书。", pinyin:"Zhuōzi shàngmiàn yǒu yí ge diànnǎo hé yì běn shū.", viet:"Trên bàn có một máy tính và một quyển sách."},
+];
+
+const DIEN_TRONG = [
+  {before:"图书馆在教学楼", blank:"北边", after:"。", hint:"phía bắc", answer:"北边", full:"图书馆在教学楼北边。"},
+  {before:"中国银行在", blank:"哪儿", after:"？", hint:"ở đâu", answer:"哪儿", full:"中国银行在哪儿？"},
+  {before:"我跟你一起去", blank:"吧", after:"。", hint:"trợ từ đề nghị", answer:"吧", full:"我跟你一起去吧。"},
+  {before:"商店在什么", blank:"地方", after:"？", hint:"địa điểm, chỗ", answer:"地方", full:"商店在什么地方？"},
+  {before:"留学生楼西边有一个饭馆，还", blank:"有", after:"一个超市。", hint:"còn có", answer:"有", full:"留学生楼西边有一个饭馆，还有一个超市。"},
+  {before:"对不起，我不", blank:"知道", after:"。", hint:"biết", answer:"知道", full:"对不起，我不知道。"},
+  {before:"太好", blank:"了", after:"！", hint:"trợ từ cảm thán", answer:"了", full:"太好了！"},
+  {before:"超市在图书馆", blank:"东边", after:"。", hint:"phía đông", answer:"东边", full:"超市在图书馆东边。"},
+  {before:"书包", blank:"旁边", after:"有什么？", hint:"bên cạnh", answer:"旁边", full:"书包旁边有什么？"},
+  {before:"老师和学生在教室", blank:"里", after:"。", hint:"bên trong", answer:"里", full:"老师和学生在教室里。"},
+];
+
+const TRAC_NGHIEM = [
+  {question:"'在哪儿' có nghĩa là gì?", options:["ở đó","ở đây","ở đâu","đi đâu"], correct:2},
+  {question:"Chọn pinyin đúng cho '图书馆':", options:["túshūguǎn","tǐyùguǎn","túshūguǎn","túshùguǎn"], correct:2},
+  {question:"Câu mẫu 'Thư viện ở phía bắc toà giảng đường' là:", options:["图书馆在教学楼北边。","教学楼在图书馆北边。","图书馆北边有教学楼。","教学楼北边有图书馆。"], correct:0},
+  {question:"'没关系' có nghĩa là:", options:["xin lỗi","cảm ơn","không sao","tốt quá"], correct:2},
+  {question:"'对不起' có nghĩa là:", options:["không sao","xin lỗi","xin hỏi","rất vui"], correct:1},
+  {question:"Cấu trúc 'S跟S2一起V' dùng để nói gì?", options:["Hỏi địa điểm","Diễn tả cùng làm gì đó với ai","Hỏi có hay không","Diễn tả hướng đi"], correct:1},
+  {question:"'还有' có nghĩa là:", options:["vẫn còn","tổng cộng","ngoài ra còn có","đã có rồi"], correct:2},
+  {question:"Từ nào có nghĩa là 'bên cạnh'?", options:["对面","旁边","里边","前边"], correct:1},
+  {question:"'体育馆' là gì?", options:["thư viện","sân vận động","nhà thi đấu thể thao","toà giảng đường"], correct:2},
+  {question:"'就是' nghĩa là:", options:["chỉ có","chính là / đúng là","đã là","sẽ là"], correct:1},
+  {question:"Cấu trúc nào dùng để nói 'phía tây toà giảng đường có một sân vận động'?", options:["运动场在教学楼西边。","教学楼西边有运动场。","运动场和教学楼西边。","有运动场在教学楼西边。"], correct:1},
+  {question:"'什么地方' đồng nghĩa với:", options:["什么时间","哪儿","多少钱","哪个"], correct:1},
+];
+
+const SAP_XEP = [
+  {words:["银行","在","哪儿","中国"], answer:"中国银行在哪儿？", meaning:"Ngân hàng Trung Quốc ở đâu?"},
+  {words:["图书馆","教学楼","在","北边"], answer:"图书馆在教学楼北边。", meaning:"Thư viện ở phía bắc toà giảng đường."},
+  {words:["我","你","去","跟","一起","吧"], answer:"我跟你一起去吧。", meaning:"Tôi đi cùng bạn nhé."},
+  {words:["商店","在","什么","地方"], answer:"商店在什么地方？", meaning:"Cửa hàng ở chỗ nào vậy?"},
+  {words:["超市","一个","东边","有","留学生楼"], answer:"留学生楼东边有一个超市。", meaning:"Phía đông ký túc xá có một siêu thị."},
+  {words:["对不起","不","我","知道"], answer:"对不起，我不知道。", meaning:"Xin lỗi, tôi không biết."},
+  {words:["教室","学生","在","和","老师","里"], answer:"老师和学生在教室里。", meaning:"Thầy giáo và học sinh ở trong lớp học."},
+];
+
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
+let fcIndex=0, fcFlipped=false;
+const scores={viet_trung:{correct:0,wrong:0,done:0},dich_vt:{correct:0,wrong:0,done:0},dich_tv:{correct:0,wrong:0,done:0},dien_trong:{correct:0,wrong:0,done:0},trac:{correct:0,wrong:0,done:0},sap_xep:{correct:0,wrong:0,done:0}};
+
+// ── NAV ──
+function showSection(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='summary') updateSummary();
+}
+
+// ── SCORE ──
+function updateScoreBar(){
+  let c=0,w=0,d=0;
+  Object.values(scores).forEach(s=>{c+=s.correct;w+=s.wrong;d+=s.done;});
+  document.getElementById('score-display').innerHTML=`✅ Đúng: ${c} &nbsp;|&nbsp; ❌ Sai: ${w} &nbsp;|&nbsp; 📝 Đã làm: ${d}`;
+}
+function addScore(key,ok){scores[key].done++;if(ok)scores[key].correct++;else scores[key].wrong++;updateScoreBar();}
+
+// ── A. FLASHCARDS ──
+function renderFlashcard(){
+  const v=VOCAB[fcIndex];
+  document.getElementById('fc-hanzi').textContent=v.hanzi;
+  document.getElementById('fc-pinyin').textContent=v.pinyin;
+  document.getElementById('fc-meaning').textContent='🇻🇳 '+v.meaning;
+  document.getElementById('fc-example').textContent=v.example;
+  document.getElementById('fc-index').textContent=fcIndex+1;
+  document.getElementById('fc-total').textContent=VOCAB.length;
+  document.getElementById('flip-card').classList.remove('flipped');
+  fcFlipped=false;
+}
+function flipCard(){document.getElementById('flip-card').classList.toggle('flipped');fcFlipped=!fcFlipped;}
+function nextCard(){fcIndex=(fcIndex+1)%VOCAB.length;renderFlashcard();}
+function prevCard(){fcIndex=(fcIndex-1+VOCAB.length)%VOCAB.length;renderFlashcard();}
+renderFlashcard();
+
+// ── B. VIỆT→TRUNG ──
+function buildVietTrung(){
+  const el=document.getElementById('viet-trung-list'); el.innerHTML='';
+  VIET_TRUNG.forEach((item,i)=>{
+    el.innerHTML+=`<div class="exercise-item" id="vt-item-${i}">
+      <div class="question-text">Câu ${i+1}. Từ tiếng Việt: <strong>${item.viet}</strong></div>
+      <input class="answer-input" id="vt-inp-${i}" placeholder="Nhập chữ Hán..." onkeydown="if(event.key==='Enter')checkVT(${i})">
+      <div class="item-actions">
+        <button class="btn btn-primary btn-sm" onclick="checkVT(${i})">Kiểm tra</button>
+        <button class="btn btn-outline btn-sm" onclick="showAns('vt-ans-${i}')">Xem đáp án</button>
+      </div>
+      <div class="feedback" id="vt-fb-${i}"></div>
+      <div class="answer-reveal" id="vt-ans-${i}">✅ Đáp án: <strong>${item.answer}</strong> (${item.pinyin})</div>
+    </div>`;
+  });
+}
+function checkVT(i){
+  const item=VIET_TRUNG[i],inp=document.getElementById(`vt-inp-${i}`),fb=document.getElementById(`vt-fb-${i}`),el=document.getElementById(`vt-item-${i}`);
+  const val=inp.value.trim();
+  if(!val){fb.textContent="⚠️ Hãy nhập đáp án!";fb.className='feedback wrong';return;}
+  const ok=val===item.answer;
+  fb.textContent=ok?'✅ Chính xác! 🎉':'❌ Chưa đúng. Thử lại nhé!';
+  fb.className=ok?'feedback correct':'feedback wrong';
+  inp.className=ok?'answer-input correct-input':'answer-input wrong-input';
+  el.className=ok?'exercise-item correct':'exercise-item wrong';
+  if(!el.dataset.scored){addScore('viet_trung',ok);el.dataset.scored='1';}
+}
+
+// ── C. DỊCH CÂU V→T ──
+function buildDichVT(){
+  const el=document.getElementById('dich-cau-vt-list'); el.innerHTML='';
+  DICH_CAU_VT.forEach((item,i)=>{
+    el.innerHTML+=`<div class="exercise-item" id="dvt-item-${i}">
+      <div class="question-text">Câu ${i+1}. Dịch sang tiếng Trung:</div>
+      <div class="question-chinese" style="color:#1a5276;font-size:1rem;">🇻🇳 ${item.viet}</div>
+      <input class="answer-input" id="dvt-inp-${i}" placeholder="Nhập câu tiếng Trung..." style="margin-top:8px;" onkeydown="if(event.key==='Enter')checkDVT(${i})">
+      <div class="item-actions">
+        <button class="btn btn-primary btn-sm" onclick="checkDVT(${i})">Kiểm tra</button>
+        <button class="btn btn-outline btn-sm" onclick="showAns('dvt-ans-${i}')">Xem đáp án</button>
+      </div>
+      <div class="feedback" id="dvt-fb-${i}"></div>
+      <div class="answer-reveal" id="dvt-ans-${i}">✅ Đáp án mẫu: <strong>${item.answer}</strong><br><em style="color:#555;font-size:0.82rem;">${item.pinyin}</em></div>
+    </div>`;
+  });
+}
+function checkDVT(i){
+  const item=DICH_CAU_VT[i],inp=document.getElementById(`dvt-inp-${i}`),fb=document.getElementById(`dvt-fb-${i}`),el=document.getElementById(`dvt-item-${i}`);
+  const val=inp.value.trim();
+  if(!val){fb.textContent="⚠️ Hãy nhập đáp án!";fb.className='feedback wrong';return;}
+  const clean=s=>s.replace(/[，。？！\s]/g,'');
+  const ok=clean(val)===clean(item.answer);
+  const partial=clean(item.answer).includes(clean(val).substring(0,Math.floor(clean(val).length*0.7)));
+  const result=ok||partial;
+  fb.textContent=ok?'✅ Chính xác!':(result?'✅ Gần đúng! Xem đáp án mẫu.':'❌ Chưa đúng. Xem đáp án mẫu nhé!');
+  fb.className=result?'feedback correct':'feedback wrong';
+  el.className=result?'exercise-item correct':'exercise-item wrong';
+  showAns(`dvt-ans-${i}`);
+  if(!el.dataset.scored){addScore('dich_vt',result);el.dataset.scored='1';}
+}
+
+// ── D. DỊCH CÂU T→V ──
+function buildDichTV(){
+  const el=document.getElementById('dich-cau-tv-list'); el.innerHTML='';
+  DICH_CAU_TV.forEach((item,i)=>{
+    el.innerHTML+=`<div class="exercise-item" id="dtv-item-${i}">
+      <div class="question-text">Câu ${i+1}. Dịch sang tiếng Việt:</div>
+      <div class="question-chinese">${item.chinese}</div>
+      <div class="question-hint">${item.pinyin}</div>
+      <input class="answer-input" id="dtv-inp-${i}" placeholder="Nhập nghĩa tiếng Việt..." onkeydown="if(event.key==='Enter')checkDTV(${i})">
+      <div class="item-actions">
+        <button class="btn btn-primary btn-sm" onclick="checkDTV(${i})">So sánh đáp án</button>
+      </div>
+      <div class="feedback" id="dtv-fb-${i}"></div>
+      <div class="answer-reveal" id="dtv-ans-${i}">📖 Đáp án mẫu: <strong>${item.viet}</strong></div>
+    </div>`;
+  });
+}
+function checkDTV(i){
+  const item=DICH_CAU_TV[i],inp=document.getElementById(`dtv-inp-${i}`),fb=document.getElementById(`dtv-fb-${i}`),el=document.getElementById(`dtv-item-${i}`);
+  const val=inp.value.trim().toLowerCase();
+  if(!val){fb.textContent="⚠️ Hãy nhập đáp án!";fb.className='feedback wrong';return;}
+  const kw=item.viet.toLowerCase().split(/[\s,\.]+/).filter(w=>w.length>2);
+  const ok=kw.filter(k=>val.includes(k)).length>=Math.ceil(kw.length*0.5);
+  fb.textContent=ok?'✅ Tốt lắm! Nghĩa khớp với đáp án mẫu.':'💡 Hãy xem đáp án mẫu để so sánh.';
+  fb.className=ok?'feedback correct':'feedback wrong';
+  showAns(`dtv-ans-${i}`);
+  if(!el.dataset.scored){addScore('dich_tv',ok);el.dataset.scored='1';}
+}
+
+// ── E. ĐIỀN TRỐNG ──
+function buildDienTrong(){
+  const el=document.getElementById('dien-cho-trong-list'); el.innerHTML='';
+  DIEN_TRONG.forEach((item,i)=>{
+    el.innerHTML+=`<div class="exercise-item" id="dt-item-${i}">
+      <div class="question-text">Câu ${i+1}.</div>
+      <div class="question-chinese">${item.before} <span style="color:#e67e22;font-weight:900;">___</span> ${item.after}</div>
+      <div class="question-hint">💡 Gợi ý: ${item.hint}</div>
+      <input class="answer-input" id="dt-inp-${i}" placeholder="Điền vào chỗ trống..." onkeydown="if(event.key==='Enter')checkDT(${i})">
+      <div class="item-actions">
+        <button class="btn btn-primary btn-sm" onclick="checkDT(${i})">Kiểm tra</button>
+        <button class="btn btn-outline btn-sm" onclick="showAns('dt-ans-${i}')">Xem đáp án</button>
+      </div>
+      <div class="feedback" id="dt-fb-${i}"></div>
+      <div class="answer-reveal" id="dt-ans-${i}">✅ Đáp án: <strong>${item.answer}</strong> → ${item.full}</div>
+    </div>`;
+  });
+}
+function checkDT(i){
+  const item=DIEN_TRONG[i],inp=document.getElementById(`dt-inp-${i}`),fb=document.getElementById(`dt-fb-${i}`),el=document.getElementById(`dt-item-${i}`);
+  const val=inp.value.trim();
+  if(!val){fb.textContent="⚠️ Hãy nhập đáp án!";fb.className='feedback wrong';return;}
+  const ok=val===item.answer;
+  fb.textContent=ok?'✅ Chính xác!':`❌ Chưa đúng. Đáp án là: ${item.answer}`;
+  fb.className=ok?'feedback correct':'feedback wrong';
+  inp.className=ok?'answer-input correct-input':'answer-input wrong-input';
+  el.className=ok?'exercise-item correct':'exercise-item wrong';
+  showAns(`dt-ans-${i}`);
+  if(!el.dataset.scored){addScore('dien_trong',ok);el.dataset.scored='1';}
+}
+
+// ── F. TRẮC NGHIỆM ──
+function buildTracNghiem(){
+  const el=document.getElementById('trac-nghiem-list'); el.innerHTML='';
+  TRAC_NGHIEM.forEach((item,qi)=>{
+    const opts=item.options.map((o,oi)=>`<button class="mcq-opt" id="tn-opt-${qi}-${oi}" onclick="selectMCQ(${qi},${oi})">${o}</button>`).join('');
+    el.innerHTML+=`<div class="exercise-item" id="tn-item-${qi}">
+      <div class="question-text">Câu ${qi+1}. ${item.question}</div>
+      <div class="mcq-options">${opts}</div>
+      <div class="feedback" id="tn-fb-${qi}"></div>
+    </div>`;
+  });
+}
+function selectMCQ(qi,oi){
+  const item=TRAC_NGHIEM[qi],el=document.getElementById(`tn-item-${qi}`);
+  if(el.dataset.scored)return;
+  const ok=oi===item.correct;
+  for(let j=0;j<item.options.length;j++){
+    const b=document.getElementById(`tn-opt-${qi}-${j}`);b.disabled=true;
+    if(j===item.correct)b.classList.add('selected-correct');
+  }
+  if(!ok)document.getElementById(`tn-opt-${qi}-${oi}`).classList.add('selected-wrong');
+  const fb=document.getElementById(`tn-fb-${qi}`);
+  fb.textContent=ok?'✅ Chính xác!':`❌ Chưa đúng. Đáp án đúng: ${item.options[item.correct]}`;
+  fb.className=ok?'feedback correct':'feedback wrong';
+  addScore('trac',ok); el.dataset.scored='1';
+}
+
+// ── G. SẮP XẾP CÂU ──
+const sortState=SAP_XEP.map(item=>({placed:[],shuffled:[...item.words].sort(()=>Math.random()-0.5)}));
+
+function buildSapXep(){
+  const el=document.getElementById('sap-xep-list'); el.innerHTML='';
+  SAP_XEP.forEach((item,si)=>{
+    sortState[si].shuffled=[...item.words].sort(()=>Math.random()-0.5);
+    sortState[si].placed=[];
+    const toks=sortState[si].shuffled.map((w,wi)=>`<span class="token" id="tok-${si}-${wi}" onclick="placeToken(${si},${wi})">${w}</span>`).join('');
+    el.innerHTML+=`<div class="exercise-item" id="ss-item-${si}">
+      <div class="question-text">Câu ${si+1}. Sắp xếp thành câu đúng: <span style="font-size:0.82rem;color:#7f8c8d;">(${item.meaning})</span></div>
+      <div class="sort-tokens" id="tokens-${si}">${toks}</div>
+      <div style="font-size:0.82rem;color:#7f8c8d;margin-bottom:4px;">Câu của bạn:</div>
+      <div class="sort-answer-box" id="ans-box-${si}"></div>
+      <div class="item-actions">
+        <button class="btn btn-primary btn-sm" onclick="checkSort(${si})">Kiểm tra</button>
+        <button class="btn btn-outline btn-sm" onclick="resetSort(${si})">Làm lại</button>
+        <button class="btn btn-outline btn-sm" onclick="showAns('ss-ans-${si}')">Xem đáp án</button>
+      </div>
+      <div class="feedback" id="ss-fb-${si}"></div>
+      <div class="answer-reveal" id="ss-ans-${si}">✅ Đáp án mẫu: <strong>${item.answer}</strong></div>
+    </div>`;
+  });
+}
+function placeToken(si,wi){
+  const tok=document.getElementById(`tok-${si}-${wi}`);
+  if(tok.classList.contains('used')){
+    sortState[si].placed=sortState[si].placed.filter(p=>p.wi!==wi);
+    tok.classList.remove('used'); renderAnsBox(si); return;
+  }
+  sortState[si].placed.push({wi,word:tok.textContent});
+  tok.classList.add('used'); renderAnsBox(si);
+}
+function renderAnsBox(si){
+  document.getElementById(`ans-box-${si}`).innerHTML=sortState[si].placed.map((p,pi)=>`<span class="sort-placed" onclick="removePlaced(${si},${pi})">${p.word}</span>`).join('');
+}
+function removePlaced(si,pi){
+  const p=sortState[si].placed[pi];
+  sortState[si].placed.splice(pi,1);
+  document.getElementById(`tok-${si}-${p.wi}`).classList.remove('used');
+  renderAnsBox(si);
+}
+function checkSort(si){
+  const item=SAP_XEP[si],el=document.getElementById(`ss-item-${si}`),fb=document.getElementById(`ss-fb-${si}`);
+  const placed=sortState[si].placed.map(p=>p.word).join('');
+  const clean=s=>s.replace(/[，。？！\s]/g,'');
+  const ok=clean(placed)===clean(item.answer);
+  fb.textContent=ok?'✅ Chính xác!':`❌ Chưa đúng. Xem đáp án nhé!`;
+  fb.className=ok?'feedback correct':'feedback wrong';
+  showAns(`ss-ans-${si}`);
+  if(!el.dataset.scored){addScore('sap_xep',ok);el.dataset.scored='1';}
+}
+function resetSort(si){
+  sortState[si].placed=[];
+  const item=SAP_XEP[si];
+  sortState[si].shuffled=[...item.words].sort(()=>Math.random()-0.5);
+  document.getElementById(`tokens-${si}`).innerHTML=sortState[si].shuffled.map((w,wi)=>`<span class="token" id="tok-${si}-${wi}" onclick="placeToken(${si},${wi})">${w}</span>`).join('');
+  renderAnsBox(si);
+  document.getElementById(`ss-fb-${si}`).textContent='';
+  document.getElementById(`ss-ans-${si}`).style.display='none';
+}
+
+// ── UTIL ──
+function showAns(id){document.getElementById(id).style.display='block';}
+
+// ── H. SUMMARY ──
+function updateSummary(){
+  let tc=0,td=0; Object.values(scores).forEach(s=>{tc+=s.correct;td+=s.done;});
+  document.getElementById('final-score').textContent=`${tc} / ${td}`;
+  const pct=td>0?Math.round(tc/td*100):0;
+  document.getElementById('final-label').textContent=td===0?'Hãy làm các bài tập để xem điểm!':`Tỉ lệ đúng: ${pct}%`;
+  let cg='';
+  if(td===0)cg='👆 Bắt đầu làm bài nhé!';
+  else if(pct>=90)cg='🏆 Xuất sắc! Bạn nắm vững bài học rất tốt!';
+  else if(pct>=70)cg='👍 Tốt lắm! Ôn thêm một chút là hoàn hảo!';
+  else if(pct>=50)cg='💪 Cố gắng thêm nhé! Bạn đang tiến bộ!';
+  else cg='📖 Hãy xem lại bài học và thử lại!';
+  document.getElementById('congrats-text').textContent=cg;
+  const labels={viet_trung:'B. Việt→Trung (từ)',dich_vt:'C. Dịch câu V→T',dich_tv:'D. Dịch câu T→V',dien_trong:'E. Điền trống',trac:'F. Trắc nghiệm',sap_xep:'G. Sắp xếp câu'};
+  document.getElementById('section-scores').innerHTML=Object.entries(scores).map(([k,v])=>`<div class="section-score-row"><span>${labels[k]}</span><span class="score-badge">${v.correct}/${v.done}</span></div>`).join('');
+}
+
+// ── RESET ──
+function resetAll(){
+  Object.keys(scores).forEach(k=>{scores[k]={correct:0,wrong:0,done:0};});
+  updateScoreBar(); fcIndex=0; renderFlashcard();
+  buildVietTrung(); buildDichVT(); buildDichTV(); buildDienTrong(); buildTracNghiem(); buildSapXep();
+  showSection('flashcards',document.querySelector('.nav-btn'));
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+}
+
+// init
+buildVietTrung(); buildDichVT(); buildDichTV(); buildDienTrong(); buildTracNghiem(); buildSapXep();
+</script>
+</body>
+</html>
